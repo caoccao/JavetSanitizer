@@ -8,8 +8,8 @@ TODO
 
 ## Document
 
-- [Development](blob/main/docs/development.md)
-- [Errors](blob/main/docs/errors.md)
+- [Development](docs/development.md)
+- [Errors](docs/errors.md)
 
 ## License
 
