@@ -14,28 +14,25 @@
  * limitations under the License.
  */
 
-plugins {
-    id("java")
-}
+package com.caoccao.javet.sanitizer.matchers;
 
-group = "com.caoccao.javet.sanitizer"
-version = "0.1.0"
+import com.caoccao.javet.sanitizer.options.JavetSanitizerOption;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.ParseTree;
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    // https://mvnrepository.com/artifact/org.antlr/antlr4
-    implementation("org.antlr:antlr4:4.13.1")
-
-    // https://mvnrepository.com/artifact/org.junit/junit-bom
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
-}
-
-tasks.test {
-    useJUnitPlatform()
+/**
+ * The interface Javet sanitizer matcher.
+ *
+ * @since 0.1.0
+ */
+public interface IJavetSanitizerMatcher {
+    /**
+     * Matches parse tree.
+     *
+     * @param option  the option
+     * @param context the context
+     * @return the parse tree
+     * @since 0.1.0
+     */
+    ParseTree matches(JavetSanitizerOption option, ParserRuleContext context);
 }
