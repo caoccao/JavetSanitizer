@@ -20,13 +20,33 @@ package com.caoccao.javet.sanitizer.parsers;
 import com.caoccao.javet.sanitizer.antlr.JavaScriptParser;
 import com.caoccao.javet.sanitizer.exceptions.JavetSanitizerException;
 
+/**
+ * The type JavaScript anonymous function parser.
+ *
+ * @since 0.1.0
+ */
 public class JavaScriptAnonymousFunctionParser
         extends BaseJavaScriptContextParser<JavaScriptAnonymousFunctionParser, JavaScriptParser.AnonymousFunctionContext> {
 
+    /**
+     * Instantiates a new JavaScript anonymous function parser.
+     *
+     * @param codeString the code string
+     * @throws JavetSanitizerException the javet sanitizer exception
+     * @since 0.1.0
+     */
     public JavaScriptAnonymousFunctionParser(String codeString) throws JavetSanitizerException {
         this(null, codeString);
     }
 
+    /**
+     * Instantiates a new JavaScript anonymous function parser.
+     *
+     * @param context    the context
+     * @param codeString the code string
+     * @throws JavetSanitizerException the javet sanitizer exception
+     * @since 0.1.0
+     */
     public JavaScriptAnonymousFunctionParser(
             JavaScriptParser.AnonymousFunctionContext context,
             String codeString) throws JavetSanitizerException {

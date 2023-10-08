@@ -21,12 +21,28 @@ import com.caoccao.javet.sanitizer.exceptions.JavetSanitizerException;
 import com.caoccao.javet.sanitizer.options.JavetSanitizerOption;
 import com.caoccao.javet.sanitizer.parsers.JavaScriptAnonymousFunctionParser;
 
+/**
+ * The type Javet sanitizer anonymous function checker.
+ *
+ * @since 0.1.0
+ */
 public class JavetSanitizerAnonymousFunctionChecker
         extends BaseJavetSanitizerChecker<JavaScriptAnonymousFunctionParser> {
+    /**
+     * Instantiates a new Javet sanitizer anonymous function checker.
+     *
+     * @since 0.1.0
+     */
     public JavetSanitizerAnonymousFunctionChecker() {
         this(JavetSanitizerOption.Default);
     }
 
+    /**
+     * Instantiates a new Javet sanitizer anonymous function checker.
+     *
+     * @param option the option
+     * @since 0.1.0
+     */
     public JavetSanitizerAnonymousFunctionChecker(JavetSanitizerOption option) {
         super(option);
     }

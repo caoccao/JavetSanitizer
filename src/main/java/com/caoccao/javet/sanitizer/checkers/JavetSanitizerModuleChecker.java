@@ -27,13 +27,34 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The type Javet sanitizer module checker.
+ *
+ * @since 0.1.0
+ */
 public class JavetSanitizerModuleChecker extends JavetSanitizerStatementListChecker {
+    /**
+     * The Function parser map.
+     *
+     * @since 0.1.0
+     */
     protected final Map<String, JavaScriptFunctionDeclarationParser> functionParserMap;
 
+    /**
+     * Instantiates a new Javet sanitizer module checker.
+     *
+     * @since 0.1.0
+     */
     public JavetSanitizerModuleChecker() {
         this(JavetSanitizerOption.Default);
     }
 
+    /**
+     * Instantiates a new Javet sanitizer module checker.
+     *
+     * @param option the option
+     * @since 0.1.0
+     */
     public JavetSanitizerModuleChecker(JavetSanitizerOption option) {
         super(option);
         functionParserMap = new HashMap<>();
@@ -70,6 +91,12 @@ public class JavetSanitizerModuleChecker extends JavetSanitizerStatementListChec
         functionParserMap.clear();
     }
 
+    /**
+     * Validate functions.
+     *
+     * @throws JavetSanitizerException the javet sanitizer exception
+     * @since 0.1.0
+     */
     protected void validateFunctions() throws JavetSanitizerException {
         for (String functionIdentifier : option.getReservedFunctionIdentifierSet()) {
             if (!functionParserMap.containsKey(functionIdentifier)) {

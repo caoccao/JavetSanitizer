@@ -25,14 +25,35 @@ import com.caoccao.javet.sanitizer.parsers.JavaScriptStatementParser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Javet sanitizer statement list checker.
+ *
+ * @since 0.1.0
+ */
 public class JavetSanitizerStatementListChecker
         extends BaseJavetSanitizerChecker<JavaScriptStatementListParser> {
+    /**
+     * The Statement parsers.
+     *
+     * @since 0.1.0
+     */
     protected List<JavaScriptStatementParser> statementParsers;
 
+    /**
+     * Instantiates a new Javet sanitizer statement list checker.
+     *
+     * @since 0.1.0
+     */
     public JavetSanitizerStatementListChecker() {
         this(JavetSanitizerOption.Default);
     }
 
+    /**
+     * Instantiates a new Javet sanitizer statement list checker.
+     *
+     * @param option the option
+     * @since 0.1.0
+     */
     public JavetSanitizerStatementListChecker(JavetSanitizerOption option) {
         super(option);
     }

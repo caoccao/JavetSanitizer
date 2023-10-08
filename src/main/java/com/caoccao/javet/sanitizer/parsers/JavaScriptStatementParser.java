@@ -20,12 +20,32 @@ package com.caoccao.javet.sanitizer.parsers;
 import com.caoccao.javet.sanitizer.antlr.JavaScriptParser;
 import com.caoccao.javet.sanitizer.exceptions.JavetSanitizerException;
 
+/**
+ * The type JavaScript statement parser.
+ *
+ * @since 0.1.0
+ */
 public class JavaScriptStatementParser
         extends BaseJavaScriptContextParser<JavaScriptStatementParser, JavaScriptParser.StatementContext> {
+    /**
+     * Instantiates a new JavaScript statement parser.
+     *
+     * @param codeString the code string
+     * @throws JavetSanitizerException the javet sanitizer exception
+     * @since 0.1.0
+     */
     public JavaScriptStatementParser(String codeString) throws JavetSanitizerException {
         this(null, codeString);
     }
 
+    /**
+     * Instantiates a new JavaScript statement parser.
+     *
+     * @param context    the context
+     * @param codeString the code string
+     * @throws JavetSanitizerException the javet sanitizer exception
+     * @since 0.1.0
+     */
     public JavaScriptStatementParser(
             JavaScriptParser.StatementContext context,
             String codeString)

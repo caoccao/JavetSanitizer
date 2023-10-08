@@ -19,12 +19,32 @@ package com.caoccao.javet.sanitizer.parsers;
 import com.caoccao.javet.sanitizer.antlr.JavaScriptParser;
 import com.caoccao.javet.sanitizer.exceptions.JavetSanitizerException;
 
+/**
+ * The type JavaScript single expression parser.
+ *
+ * @since 0.1.0
+ */
 public class JavaScriptSingleExpressionParser
         extends BaseJavaScriptContextParser<JavaScriptSingleExpressionParser, JavaScriptParser.SingleExpressionContext> {
+    /**
+     * Instantiates a new JavaScript single expression parser.
+     *
+     * @param codeString the code string
+     * @throws JavetSanitizerException the javet sanitizer exception
+     * @since 0.1.0
+     */
     public JavaScriptSingleExpressionParser(String codeString) throws JavetSanitizerException {
         this(null, codeString);
     }
 
+    /**
+     * Instantiates a new JavaScript single expression parser.
+     *
+     * @param context    the context
+     * @param codeString the code string
+     * @throws JavetSanitizerException the javet sanitizer exception
+     * @since 0.1.0
+     */
     public JavaScriptSingleExpressionParser(
             JavaScriptParser.SingleExpressionContext context,
             String codeString)

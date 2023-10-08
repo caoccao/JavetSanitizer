@@ -21,12 +21,26 @@ import com.caoccao.javet.sanitizer.exceptions.JavetSanitizerException;
 import com.caoccao.javet.sanitizer.options.JavetSanitizerOption;
 import com.caoccao.javet.sanitizer.parsers.JavaScriptExpressionSequenceParser;
 
+/**
+ * The type Javet sanitizer expression sequence checker.
+ *
+ * @since 0.1.0
+ */
 public class JavetSanitizerExpressionSequenceChecker
         extends BaseJavetSanitizerChecker<JavaScriptExpressionSequenceParser> {
+    /**
+     * Instantiates a new Javet sanitizer expression sequence checker.
+     */
     public JavetSanitizerExpressionSequenceChecker() {
         this(JavetSanitizerOption.Default);
     }
 
+    /**
+     * Instantiates a new Javet sanitizer expression sequence checker.
+     *
+     * @param option the option
+     * @since 0.1.0
+     */
     public JavetSanitizerExpressionSequenceChecker(JavetSanitizerOption option) {
         super(option);
     }

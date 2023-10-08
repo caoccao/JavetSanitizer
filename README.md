@@ -10,9 +10,10 @@ A script engine like Javet can be shared by multiple scripts, however one script
 
 Javet Sanitizer is designed to protect the script engine from that kind of attacks.
 
-## Why not user Babel?
+## Why not use Babel?
 
-Babel is too slow.
+- Babel is too slow.
+- Babel AST cannot be easily imported to JVM.
 
 ## Features
 
