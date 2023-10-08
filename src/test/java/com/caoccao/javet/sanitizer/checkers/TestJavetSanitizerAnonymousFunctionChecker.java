@@ -19,22 +19,19 @@ package com.caoccao.javet.sanitizer.checkers;
 import com.caoccao.javet.sanitizer.exceptions.JavetSanitizerException;
 import com.caoccao.javet.sanitizer.utils.SimpleList;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestJavetSanitizerAnonymousFunctionChecker {
-    protected void assertException(Executable executable, int errorCode, String errorMessage, String contextString) {
-        JavetSanitizerException exception = assertThrows(JavetSanitizerException.class, executable);
-        assertEquals(errorCode, exception.getError().getCode());
-        assertEquals(errorMessage, exception.getMessage());
-        assertEquals(contextString, exception.getContext().toString());
-    }
-
+public class TestJavetSanitizerAnonymousFunctionChecker extends BaseTestJavetSanitizerChecker {
     @Test
-    public void testInvalidStatements() throws JavetSanitizerException {
+    public void testInvalidStatements() {
+        SimpleList.of("", "   ", null).forEach(statement ->
+                assertException(
+                        () -> new JavetSanitizerAnonymousFunctionChecker().check(statement),
+                        2, "The JavaScript code is empty.",
+                        null));
         assertException(
                 () -> new JavetSanitizerAnonymousFunctionChecker().check("const a;"),
                 200, "Token const is invalid. Expecting {'(', 'function', 'as', 'from', 'async', NonStrictLet, Identifier}.",

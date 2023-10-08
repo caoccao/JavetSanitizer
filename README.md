@@ -10,6 +10,10 @@ A script engine like Javet can be shared by multiple scripts, however one script
 
 Javet Sanitizer is designed to protect the script engine from that kind of attacks.
 
+## Why not user Babel?
+
+Babel is too slow.
+
 ## Features
 
 - AST Pattern Matching
