@@ -56,7 +56,7 @@ public final class JavetSanitizerIdentifierMatcher implements IJavetSanitizerMat
         return null;
     }
 
-    private boolean matches(JavetSanitizerOption option, String identifier) {
+    boolean matches(JavetSanitizerOption option, String identifier) {
         if (StringUtils.isEmpty(identifier)) {
             return false;
         }

@@ -74,6 +74,19 @@ public final class JavetSanitizerException extends Exception {
     }
 
     /**
+     * Function not found javet sanitizer exception.
+     *
+     * @param name the name
+     * @return the javet sanitizer exception
+     * @since 0.1.0
+     */
+    public static JavetSanitizerException functionNotFound(String name) {
+        return new JavetSanitizerException(
+                JavetSanitizerError.FunctionNotFound,
+                SimpleMap.of("name", name));
+    }
+
+    /**
      * Identifier not allowed javet sanitizer exception.
      *
      * @param identifier the identifier
@@ -97,6 +110,19 @@ public final class JavetSanitizerException extends Exception {
         return new JavetSanitizerException(
                 JavetSanitizerError.KeywordNotAllowed,
                 SimpleMap.of("keyword", keyword));
+    }
+
+    /**
+     * Listener not found javet sanitizer exception.
+     *
+     * @param listenerClassName the listener class name
+     * @return the javet sanitizer exception
+     * @since 0.1.0
+     */
+    public static JavetSanitizerException listenerNotFound(String listenerClassName) {
+        return new JavetSanitizerException(
+                JavetSanitizerError.ListenerNotFound,
+                SimpleMap.of("name", listenerClassName));
     }
 
     /**

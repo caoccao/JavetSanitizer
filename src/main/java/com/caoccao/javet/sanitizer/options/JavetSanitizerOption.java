@@ -17,9 +17,12 @@
 package com.caoccao.javet.sanitizer.options;
 
 import com.caoccao.javet.sanitizer.antlr.JavaScriptParserListener;
+import com.caoccao.javet.sanitizer.exceptions.JavetSanitizerException;
 import com.caoccao.javet.sanitizer.listeners.JavetSanitizerListener;
+import com.caoccao.javet.sanitizer.listeners.JavetSanitizerSecurityCheckListener;
 import com.caoccao.javet.sanitizer.utils.SimpleSet;
 
+import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -174,7 +177,7 @@ public final class JavetSanitizerOption {
         keywordVarEnabled = false;
         keywordWithEnabled = false;
         keywordYieldEnabled = false;
-        listenerClass = JavetSanitizerListener.class;
+        listenerClass = JavetSanitizerSecurityCheckListener.class;
         this.name = Objects.requireNonNull(name);
         reservedFunctionIdentifierSet = new HashSet<>(DEFAULT_RESERVED_FUNCTION_IDENTIFIER_SET);
         reservedIdentifierMatcher = identifier -> true;
@@ -201,6 +204,23 @@ public final class JavetSanitizerOption {
      */
     public Set<String> getDisallowedIdentifierSet() {
         return disallowedIdentifierSet;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <Listener extends JavetSanitizerListener> Listener getListener() throws JavetSanitizerException {
+        Listener listener = null;
+        if (listenerClass != null) {
+            try {
+                Constructor<Listener> constructor =
+                        (Constructor<Listener>) listenerClass.getConstructor(JavetSanitizerOption.class);
+                listener = constructor.newInstance(this);
+            } catch (Throwable ignored) {
+            }
+            if (listener == null) {
+                throw JavetSanitizerException.listenerNotFound(listenerClass.getName());
+            }
+        }
+        return listener;
     }
 
     /**

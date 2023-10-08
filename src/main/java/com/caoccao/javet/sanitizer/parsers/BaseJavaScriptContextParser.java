@@ -202,15 +202,15 @@ public abstract class BaseJavaScriptContextParser<
         try {
             parseTreeWalker.walk(listener, context);
         } catch (Throwable t) {
-            JavetSanitizerException dslParsingException = listener.getException();
-            if (dslParsingException == null) {
+            JavetSanitizerException javetSanitizerException = listener.getException();
+            if (javetSanitizerException == null) {
                 throw toJavetSanitizerExceptionException(t);
             }
             ParserRuleContext parserRuleContext = listener.getErrorContext();
             if (parserRuleContext != null) {
-                dslParsingException.setContext(toJavaScriptParserContext(parserRuleContext));
+                javetSanitizerException.setContext(toJavaScriptParserContext(parserRuleContext));
             }
-            throw dslParsingException;
+            throw javetSanitizerException;
         }
         return (Parser) this;
     }
