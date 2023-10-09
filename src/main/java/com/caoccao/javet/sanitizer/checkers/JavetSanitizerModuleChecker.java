@@ -38,7 +38,7 @@ public class JavetSanitizerModuleChecker extends JavetSanitizerStatementListChec
      *
      * @since 0.1.0
      */
-    protected final Map<String, JavaScriptFunctionDeclarationParser> functionParserMap;
+    protected Map<String, JavaScriptFunctionDeclarationParser> functionParserMap;
 
     /**
      * Instantiates a new Javet sanitizer module checker.
@@ -57,13 +57,13 @@ public class JavetSanitizerModuleChecker extends JavetSanitizerStatementListChec
      */
     public JavetSanitizerModuleChecker(JavetSanitizerOption option) {
         super(option);
-        functionParserMap = new HashMap<>();
     }
 
     @Override
     public boolean check(String codeString) throws JavetSanitizerException {
         super.check(codeString);
         final Set<String> reservedFunctionIdentifierSet = option.getReservedFunctionIdentifierSet();
+        Map<String, JavaScriptFunctionDeclarationParser> functionParserMap = getFunctionParserMap();
         functionParserMap.clear();
         boolean importStatementAllowed = option.isKeywordImportEnabled();
         for (JavaScriptStatementParser statementParser : statementParsers) {
@@ -85,10 +85,23 @@ public class JavetSanitizerModuleChecker extends JavetSanitizerStatementListChec
         return true;
     }
 
+    /**
+     * Gets function parser map.
+     *
+     * @return the function parser map
+     * @since 0.1.0
+     */
+    public Map<String, JavaScriptFunctionDeclarationParser> getFunctionParserMap() {
+        if (functionParserMap == null) {
+            functionParserMap = new HashMap<>();
+        }
+        return functionParserMap;
+    }
+
     @Override
     protected void reset() {
         super.reset();
-        functionParserMap.clear();
+        getFunctionParserMap().clear();
     }
 
     /**
@@ -98,6 +111,7 @@ public class JavetSanitizerModuleChecker extends JavetSanitizerStatementListChec
      * @since 0.1.0
      */
     protected void validateFunctions() throws JavetSanitizerException {
+        Map<String, JavaScriptFunctionDeclarationParser> functionParserMap = getFunctionParserMap();
         for (String functionIdentifier : option.getReservedFunctionIdentifierSet()) {
             if (!functionParserMap.containsKey(functionIdentifier)) {
                 throw JavetSanitizerException.functionNotFound(functionIdentifier);

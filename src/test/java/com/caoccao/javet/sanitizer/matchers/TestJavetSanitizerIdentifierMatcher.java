@@ -30,12 +30,9 @@ public class TestJavetSanitizerIdentifierMatcher {
     @Test
     public void testInvalidCases() {
         List<String> identifiers = SimpleList.of("asdf", "$123", "_abc");
-        JavetSanitizerOption option = JavetSanitizerOption.Default.toClone()
-                .setReservedIdentifierMatcher(identifier -> false)
-                .seal();
         identifiers.forEach(identifier -> {
             assertFalse(
-                    JavetSanitizerIdentifierMatcher.getInstance().matches(option, identifier),
+                    JavetSanitizerIdentifierMatcher.getInstance().matches(JavetSanitizerOption.Default, identifier),
                     identifier + " should pass.");
         });
     }

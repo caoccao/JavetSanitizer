@@ -1,6 +1,6 @@
 # Javet Sanitizer Errors
 
-| Error                 | Code | Message                                                                                | 
+| Error                 | Code | Message                                                                                |
 |-----------------------|-----:|----------------------------------------------------------------------------------------|
 | UnknownError          |    1 | Unknown error: ${message}                                                              |
 | EmptyCodeString       |    2 | The JavaScript code is empty.                                                          |

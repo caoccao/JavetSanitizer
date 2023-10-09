@@ -23,10 +23,7 @@ import com.caoccao.javet.sanitizer.listeners.JavetSanitizerSecurityCheckListener
 import com.caoccao.javet.sanitizer.utils.SimpleSet;
 
 import java.lang.reflect.Constructor;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -145,9 +142,10 @@ public final class JavetSanitizerOption {
      * @since 0.1.0
      */
     public static final JavetSanitizerOption Default = new JavetSanitizerOption("Default")
-            .setListenerClass(JavetSanitizerListener.class)
+            .setListenerClass(JavetSanitizerSecurityCheckListener.class)
             .seal();
 
+    private Map<String, Object> argumentMap;
     private Set<String> builtInObjectSet;
     private Set<String> disallowedIdentifierSet;
     private boolean keywordAsyncEnabled;
@@ -167,6 +165,7 @@ public final class JavetSanitizerOption {
     private boolean sealed;
 
     private JavetSanitizerOption(String name) {
+        argumentMap = new HashMap<>();
         builtInObjectSet = new HashSet<>(DEFAULT_BUILT_IN_OBJECT_SET);
         disallowedIdentifierSet = new HashSet<>(DEFAULT_DISALLOWED_IDENTIFIER_SET);
         keywordAsyncEnabled = false;
@@ -180,10 +179,20 @@ public final class JavetSanitizerOption {
         listenerClass = JavetSanitizerSecurityCheckListener.class;
         this.name = Objects.requireNonNull(name);
         reservedFunctionIdentifierSet = new HashSet<>(DEFAULT_RESERVED_FUNCTION_IDENTIFIER_SET);
-        reservedIdentifierMatcher = identifier -> true;
+        reservedIdentifierMatcher = identifier -> false;
         reservedIdentifierSet = new HashSet<>(DEFAULT_RESERVED_IDENTIFIER_SET);
         reservedMutableIdentifierSet = new HashSet<>(DEFAULT_RESERVED_MUTABLE_IDENTIFIER_SET);
         sealed = false;
+    }
+
+    /**
+     * Gets argument map.
+     *
+     * @return the argument map
+     * @since 0.1.0
+     */
+    public Map<String, Object> getArgumentMap() {
+        return argumentMap;
     }
 
     /**
@@ -206,21 +215,22 @@ public final class JavetSanitizerOption {
         return disallowedIdentifierSet;
     }
 
+    /**
+     * Gets listener.
+     *
+     * @param <Listener> the type parameter
+     * @return the listener
+     * @throws JavetSanitizerException the javet sanitizer exception
+     */
     @SuppressWarnings("unchecked")
     public <Listener extends JavetSanitizerListener> Listener getListener() throws JavetSanitizerException {
-        Listener listener = null;
-        if (listenerClass != null) {
-            try {
-                Constructor<Listener> constructor =
-                        (Constructor<Listener>) listenerClass.getConstructor(JavetSanitizerOption.class);
-                listener = constructor.newInstance(this);
-            } catch (Throwable ignored) {
-            }
-            if (listener == null) {
-                throw JavetSanitizerException.listenerNotFound(listenerClass.getName());
-            }
+        try {
+            Constructor<Listener> constructor =
+                    (Constructor<Listener>) listenerClass.getConstructor(JavetSanitizerOption.class);
+            return constructor.newInstance(this);
+        } catch (Throwable t) {
+            throw JavetSanitizerException.listenerNotFound(listenerClass.getName(), t);
         }
-        return listener;
     }
 
     /**
@@ -380,6 +390,7 @@ public final class JavetSanitizerOption {
      * @since 0.1.0
      */
     public JavetSanitizerOption seal() {
+        argumentMap = Collections.unmodifiableMap(argumentMap);
         builtInObjectSet = Collections.unmodifiableSet(builtInObjectSet);
         disallowedIdentifierSet = Collections.unmodifiableSet(disallowedIdentifierSet);
         reservedFunctionIdentifierSet = Collections.unmodifiableSet(reservedFunctionIdentifierSet);
@@ -551,6 +562,8 @@ public final class JavetSanitizerOption {
      */
     public JavetSanitizerOption toClone() {
         JavetSanitizerOption option = new JavetSanitizerOption(name);
+        option.argumentMap.clear();
+        option.argumentMap.putAll(argumentMap);
         option.builtInObjectSet.clear();
         option.builtInObjectSet.addAll(builtInObjectSet);
         option.disallowedIdentifierSet.clear();

@@ -41,6 +41,25 @@ public final class SimpleMap {
     /**
      * Of map.
      *
+     * @param <K>     the type parameter
+     * @param <V>     the type parameter
+     * @param objects the objects
+     * @return the map
+     * @since 0.1.0
+     */
+    @SuppressWarnings("unchecked")
+    public static <K, V> Map<K, V> of(Object... objects) {
+        Map<K, V> map = new HashMap<>();
+        final int length = objects.length;
+        for (int i = 0; i < length - 1; i += 2) {
+            map.put((K) objects[i], (V) objects[i + 1]);
+        }
+        return map;
+    }
+
+    /**
+     * Of map.
+     *
      * @param <K> the type parameter
      * @param <V> the type parameter
      * @param k1  the k1

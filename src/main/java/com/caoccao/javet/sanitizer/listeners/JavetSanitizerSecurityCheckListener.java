@@ -51,18 +51,6 @@ public class JavetSanitizerSecurityCheckListener extends JavetSanitizerListener 
     }
 
     @Override
-    public void enterArrayElement(JavaScriptParser.ArrayElementContext ctx) {
-        super.enterArrayElement(ctx);
-        validateBuiltInObject(ctx);
-    }
-
-    @Override
-    public void enterArrayLiteralExpression(JavaScriptParser.ArrayLiteralExpressionContext ctx) {
-        super.enterArrayLiteralExpression(ctx);
-        validateBuiltInObject(ctx);
-    }
-
-    @Override
     public void enterArrowFunction(JavaScriptParser.ArrowFunctionContext ctx) {
         super.enterArrowFunction(ctx);
         validateKeyword(ctx);
@@ -160,12 +148,6 @@ public class JavetSanitizerSecurityCheckListener extends JavetSanitizerListener 
     }
 
     @Override
-    public void enterIdentifierExpression(JavaScriptParser.IdentifierExpressionContext ctx) {
-        super.enterIdentifierExpression(ctx);
-        validateBuiltInObject(ctx);
-    }
-
-    @Override
     public void enterImportExpression(JavaScriptParser.ImportExpressionContext ctx) {
         super.enterImportExpression(ctx);
         validateKeyword(ctx);
@@ -187,18 +169,6 @@ public class JavetSanitizerSecurityCheckListener extends JavetSanitizerListener 
     public void enterKeyword(JavaScriptParser.KeywordContext ctx) {
         super.enterKeyword(ctx);
         validateKeyword(ctx);
-    }
-
-    @Override
-    public void enterMemberDotExpression(JavaScriptParser.MemberDotExpressionContext ctx) {
-        super.enterMemberDotExpression(ctx);
-        validateBuiltInObject(ctx);
-    }
-
-    @Override
-    public void enterMemberIndexExpression(JavaScriptParser.MemberIndexExpressionContext ctx) {
-        super.enterMemberIndexExpression(ctx);
-        validateBuiltInObject(ctx);
     }
 
     @Override

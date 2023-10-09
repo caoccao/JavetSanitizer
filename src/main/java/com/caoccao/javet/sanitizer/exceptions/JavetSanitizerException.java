@@ -116,13 +116,15 @@ public final class JavetSanitizerException extends Exception {
      * Listener not found javet sanitizer exception.
      *
      * @param listenerClassName the listener class name
+     * @param cause             the cause
      * @return the javet sanitizer exception
      * @since 0.1.0
      */
-    public static JavetSanitizerException listenerNotFound(String listenerClassName) {
+    public static JavetSanitizerException listenerNotFound(String listenerClassName, Throwable cause) {
         return new JavetSanitizerException(
                 JavetSanitizerError.ListenerNotFound,
-                SimpleMap.of("name", listenerClassName));
+                SimpleMap.of("name", listenerClassName),
+                cause);
     }
 
     /**
