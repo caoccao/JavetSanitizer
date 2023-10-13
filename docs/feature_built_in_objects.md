@@ -16,6 +16,7 @@ const a = Object.a; // Valid
 - Built-in objects cannot be declared again.
 
 ```js
+let Object = 1; // Invalid
 (Object) => {} // Invalid
 function Object() => {} // Invalid
 class Object {} // Invalid
@@ -23,9 +24,18 @@ try {} catch (Object) {} // Invalid
 [Object, JSON] = [1, 2]; // Invalid
 ```
 
+The following example shows how to update the built-in object list.
+
+```java
+JavetSanitizerOption option = JavetSanitizerOption.Default.toClone()
+option.getBuiltInObjectSet().remove("Object");
+option.getBuiltInObjectSet().add("$");
+option.seal();
+```
+
 ## List
 
-The default built-in objects are as follows:
+The default built-in object list is as follows:
 
 ```js
 _
