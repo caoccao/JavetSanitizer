@@ -1,4 +1,4 @@
-# Feature Identifier Restriction
+# Feature - Identifier Restriction
 
 JavaScript allows the identifiers to be named as built-in objects. Sometimes that creates some confusions. JavetSanitizer can disallow a set of identifiers to avoid such confusions. The following example shows how to customize the disallowed identifiers.
 
@@ -8,8 +8,6 @@ option.getDisallowedIdentifierSet().add("prototype");
 option.getDisallowedIdentifierSet().remove("Promise");
 option.seal();
 ```
-
-## List
 
 The default disallowed identifier list is as follows:
 

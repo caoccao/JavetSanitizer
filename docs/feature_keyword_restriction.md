@@ -1,4 +1,4 @@
-# Feature Keyword Restriction
+# Feature - Keyword Restriction
 
 JavaScript keywords can be restricted. The following example shows how to turn off the keyword restriction.
 
@@ -14,8 +14,6 @@ JavetSanitizerOption option = JavetSanitizerOption.Default.toClone()
         .setKeywordYieldEnabled(true)
         .seal();
 ```
-
-## List
 
 The default restricted keyword list is as follows:
 

@@ -1,4 +1,4 @@
-# Function Restriction
+# Feature - Function Restriction
 
 In a JavaScript module, it is recommended to export function only so that the module is tamper proof. The function restriction ensure the following.
 
@@ -26,7 +26,7 @@ JSON.stringify(undefined); // Regular statement is invalid.
 
 ## List
 
-The must-have function list is as follows:
+The default must-have function list is as follows:
 
 ```js
 main

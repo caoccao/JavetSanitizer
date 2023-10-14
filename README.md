@@ -18,10 +18,12 @@ Javet Sanitizer is designed to protect the script engine from that kind of attac
 ## Features
 
 - AST Pattern Matching
-- [Built-in Object Protection](docs/feature_built_in_objects.md)
+- [Built-in Object Protection](docs/feature_built_in_object_protection.md)
 - [Keyword Restriction](docs/feature_keyword_restriction.md)
 - [Function Restriction](docs/feature_function_restriction.md)
 - [Identifier Restriction](docs/feature_identifier_restriction.md)
+- [Identifier Deletion](docs/feature_identifier_deletion.md)
+- [Identifier Freeze](docs/feature_identifier_freeze.md)
 - Identifier Naming Convention
 - Complete Customization
 
