@@ -25,19 +25,19 @@ public class TestJavetSanitizerFridge {
     @Test
     public void testGenerate() {
         JavetSanitizerOption option = JavetSanitizerOption.Default.toClone();
-        option.getToBeDeletedIdentifierSet().clear();
-        option.getToBeDeletedIdentifierSet().add("eval");
-        option.getToBeDeletedIdentifierSet().add("Function");
-        option.getToBeFrozenIdentifierSet().clear();
-        option.getToBeFrozenIdentifierSet().add("Object");
-        option.getToBeFrozenIdentifierSet().add("Array");
+        option.getToBeDeletedIdentifierList().clear();
+        option.getToBeDeletedIdentifierList().add("eval");
+        option.getToBeDeletedIdentifierList().add("Function");
+        option.getToBeFrozenIdentifierList().clear();
+        option.getToBeFrozenIdentifierList().add("Object");
+        option.getToBeFrozenIdentifierList().add("Array");
         option.seal();
         String codeString = JavetSanitizerFridge.generate(option);
         assertEquals(
                 "/***** Delete 2 object(s). *****/\n" +
                         "\n" +
-                        "delete globalThis.Function;\n" +
                         "delete globalThis.eval;\n" +
+                        "delete globalThis.Function;\n" +
                         "\n" +
                         "/***** Freeze 2 object(s). *****/\n" +
                         "\n" +

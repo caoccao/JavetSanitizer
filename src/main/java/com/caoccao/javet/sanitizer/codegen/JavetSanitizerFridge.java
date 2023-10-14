@@ -33,12 +33,12 @@ public final class JavetSanitizerFridge {
      */
     public static String generate(final JavetSanitizerOption option) {
         StringBuilder sb = new StringBuilder();
-        sb.append("/***** Delete ").append(option.getToBeDeletedIdentifierSet().size()).append(" object(s). *****/\n\n");
-        option.getToBeDeletedIdentifierSet().forEach(object ->
+        sb.append("/***** Delete ").append(option.getToBeDeletedIdentifierList().size()).append(" object(s). *****/\n\n");
+        option.getToBeDeletedIdentifierList().forEach(object ->
                 sb.append("delete ").append(option.getGlobalIdentifier()).append(".").append(object).append(";\n"));
         sb.append("\n");
-        sb.append("/***** Freeze ").append(option.getToBeFrozenIdentifierSet().size()).append(" object(s). *****/\n\n");
-        option.getToBeFrozenIdentifierSet().forEach(object -> {
+        sb.append("/***** Freeze ").append(option.getToBeFrozenIdentifierList().size()).append(" object(s). *****/\n\n");
+        option.getToBeFrozenIdentifierList().forEach(object -> {
             sb.append("// ").append(object).append("\n");
             sb.append("const ").append(object).append(" = (() => {\n");
             sb.append("  const _").append(object).append(" = ").append(option.getGlobalIdentifier()).append(".").append(object).append(";\n");

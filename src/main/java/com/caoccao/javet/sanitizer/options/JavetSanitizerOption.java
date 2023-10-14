@@ -20,6 +20,7 @@ import com.caoccao.javet.sanitizer.antlr.JavaScriptParserListener;
 import com.caoccao.javet.sanitizer.exceptions.JavetSanitizerException;
 import com.caoccao.javet.sanitizer.listeners.JavetSanitizerListener;
 import com.caoccao.javet.sanitizer.listeners.JavetSanitizerSecurityCheckListener;
+import com.caoccao.javet.sanitizer.utils.SimpleList;
 import com.caoccao.javet.sanitizer.utils.SimpleSet;
 
 import java.lang.reflect.Constructor;
@@ -147,7 +148,7 @@ public final class JavetSanitizerOption {
      *
      * @since 0.1.0
      */
-    public static final Set<String> DEFAULT_TO_BE_DELETED_OBJECT_SET = Collections.unmodifiableSet(SimpleSet.of(
+    public static final List<String> DEFAULT_TO_BE_DELETED_OBJECT_LIST = Collections.unmodifiableList(SimpleList.of(
             "eval",
             "Function",
             "WebAssembly"));
@@ -156,7 +157,7 @@ public final class JavetSanitizerOption {
      *
      * @since 0.1.0
      */
-    public static final Set<String> DEFAULT_TO_BE_FROZEN_OBJECT_SET = Collections.unmodifiableSet(SimpleSet.of(
+    public static final List<String> DEFAULT_TO_BE_FROZEN_OBJECT_LIST = Collections.unmodifiableList(SimpleList.of(
             "Object", // Object must be the first.
             "AggregateError",
             "Array",
@@ -238,8 +239,8 @@ public final class JavetSanitizerOption {
     private Set<String> reservedIdentifierSet;
     private Set<String> reservedMutableIdentifierSet;
     private boolean sealed;
-    private Set<String> toBeDeletedIdentifierSet;
-    private Set<String> toBeFrozenIdentifierSet;
+    private List<String> toBeDeletedIdentifierList;
+    private List<String> toBeFrozenIdentifierList;
 
     private JavetSanitizerOption(String name) {
         argumentMap = new HashMap<>();
@@ -260,8 +261,8 @@ public final class JavetSanitizerOption {
         reservedIdentifierMatcher = identifier -> false;
         reservedIdentifierSet = new HashSet<>(DEFAULT_RESERVED_IDENTIFIER_SET);
         reservedMutableIdentifierSet = new HashSet<>(DEFAULT_RESERVED_MUTABLE_IDENTIFIER_SET);
-        toBeDeletedIdentifierSet = new HashSet<>(DEFAULT_TO_BE_DELETED_OBJECT_SET);
-        toBeFrozenIdentifierSet = new HashSet<>(DEFAULT_TO_BE_FROZEN_OBJECT_SET);
+        toBeDeletedIdentifierList = new ArrayList<>(DEFAULT_TO_BE_DELETED_OBJECT_LIST);
+        toBeFrozenIdentifierList = new ArrayList<>(DEFAULT_TO_BE_FROZEN_OBJECT_LIST);
         sealed = false;
     }
 
@@ -384,23 +385,23 @@ public final class JavetSanitizerOption {
     }
 
     /**
-     * Gets to be deleted identifier set.
+     * Gets to be deleted identifier list.
      *
-     * @return the to be deleted identifier set
+     * @return the to be deleted identifier list
      * @since 0.1.0
      */
-    public Set<String> getToBeDeletedIdentifierSet() {
-        return toBeDeletedIdentifierSet;
+    public List<String> getToBeDeletedIdentifierList() {
+        return toBeDeletedIdentifierList;
     }
 
     /**
-     * Gets to be frozen identifier set.
+     * Gets to be frozen identifier list.
      *
-     * @return the to be frozen identifier set
+     * @return the to be frozen identifier list
      * @since 0.1.0
      */
-    public Set<String> getToBeFrozenIdentifierSet() {
-        return toBeFrozenIdentifierSet;
+    public List<String> getToBeFrozenIdentifierList() {
+        return toBeFrozenIdentifierList;
     }
 
     /**
@@ -506,8 +507,8 @@ public final class JavetSanitizerOption {
         reservedFunctionIdentifierSet = Collections.unmodifiableSet(reservedFunctionIdentifierSet);
         reservedIdentifierSet = Collections.unmodifiableSet(reservedIdentifierSet);
         reservedMutableIdentifierSet = Collections.unmodifiableSet(reservedMutableIdentifierSet);
-        toBeDeletedIdentifierSet = Collections.unmodifiableSet(toBeDeletedIdentifierSet);
-        toBeFrozenIdentifierSet = Collections.unmodifiableSet(toBeFrozenIdentifierSet);
+        toBeDeletedIdentifierList = Collections.unmodifiableList(toBeDeletedIdentifierList);
+        toBeFrozenIdentifierList = Collections.unmodifiableList(toBeFrozenIdentifierList);
         sealed = true;
         return this;
     }
@@ -710,10 +711,10 @@ public final class JavetSanitizerOption {
         option.reservedIdentifierSet.addAll(reservedIdentifierSet);
         option.reservedMutableIdentifierSet.clear();
         option.reservedMutableIdentifierSet.addAll(reservedMutableIdentifierSet);
-        option.toBeDeletedIdentifierSet.clear();
-        option.toBeDeletedIdentifierSet.addAll(toBeDeletedIdentifierSet);
-        option.toBeFrozenIdentifierSet.clear();
-        option.toBeFrozenIdentifierSet.addAll(toBeFrozenIdentifierSet);
+        option.toBeDeletedIdentifierList.clear();
+        option.toBeDeletedIdentifierList.addAll(toBeDeletedIdentifierList);
+        option.toBeFrozenIdentifierList.clear();
+        option.toBeFrozenIdentifierList.addAll(toBeFrozenIdentifierList);
         return option;
     }
 }

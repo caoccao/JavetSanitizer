@@ -12,8 +12,8 @@ The following example shows how to update the to be deleted identifier list.
 
 ```java
 JavetSanitizerOption option = JavetSanitizerOption.Default.toClone()
-option.getToBeDeletedIdentifierSet().remove("WebAssemble");
-option.getToBeDeletedIdentifierSet().add("Promise");
+option.getToBeDeletedIdentifierList().remove("WebAssemble");
+option.getToBeDeletedIdentifierList().add("Promise");
 option.seal();
 ```
 

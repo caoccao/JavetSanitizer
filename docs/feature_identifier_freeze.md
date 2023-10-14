@@ -11,8 +11,8 @@ The following example shows how to update the to be frozen identifier list.
 
 ```java
 JavetSanitizerOption option = JavetSanitizerOption.Default.toClone()
-option.getToBeFrozenIdentifierSet().remove("JSON");
-option.getToBeFrozenIdentifierSet().add("XMLHttpRequest");
+option.getToBeFrozenIdentifierList().remove("JSON");
+option.getToBeFrozenIdentifierList().add("XMLHttpRequest");
 option.seal();
 ```
 
