@@ -29,7 +29,7 @@ Javet Sanitizer is designed to protect the script engine from that kind of attac
 
 ## Quick Start
 
-TODO
+- Download the Javet Sanitizer jar file from the latest [actions](https://github.com/caoccao/JavetSanitizer/actions).
 
 ## Document
 
