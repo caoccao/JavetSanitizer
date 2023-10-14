@@ -69,7 +69,7 @@ public final class JavetSanitizerOption {
      * Object.getOwnPropertyNames(global)
      *   .concat(['Decimal'])
      *   .sort()
-     *   .forEach(o => console.log(o))
+     *   .forEach(o =&gt; console.log(o))
      * </pre>
      *
      * @since 0.1.0
