@@ -21,7 +21,7 @@ env:
 
 jobs:
   build_for_antlr_4_13:
-    name: Build for antlr v4.13.x
+    name: Build for antlr ${{ env.ANTLR_4_13 }}
     runs-on: ubuntu-latest
 
     steps:
@@ -52,7 +52,7 @@ jobs:
         path: build/libs/*.jar
 
   build_for_antlr_4_12:
-    name: Build for antlr v4.12.x
+    name: Build for antlr ${{ env.ANTLR_4_12 }}
     runs-on: ubuntu-latest
 
     steps:
