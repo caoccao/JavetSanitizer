@@ -33,21 +33,28 @@ import java.util.function.Function;
  */
 public final class JavetSanitizerOption {
     /**
-     * The constant DEFAULT_RESERVED_FUNCTION_IDENTIFIER_SET.
+     * Default name of global identifier.
+     *
+     * @since 0.1.0
+     */
+    public static final String DEFAULT_GLOBAL_IDENTIFIER = "globalThis";
+
+    /**
+     * Default reserved function identifier set.
      *
      * @since 0.1.0
      */
     public static final Set<String> DEFAULT_RESERVED_FUNCTION_IDENTIFIER_SET =
             Collections.unmodifiableSet(SimpleSet.of("main"));
     /**
-     * The constant DEFAULT_RESERVED_IDENTIFIER_SET.
+     * Default reserved identifier set.
      *
      * @since 0.1.0
      */
     public static final Set<String> DEFAULT_RESERVED_IDENTIFIER_SET =
             Collections.unmodifiableSet(SimpleSet.of());
     /**
-     * The constant DEFAULT_RESERVED_MUTABLE_IDENTIFIER_SET.
+     * Default reserved mutable identifier set.
      *
      * @since 0.1.0
      */
@@ -136,6 +143,74 @@ public final class JavetSanitizerOption {
             "WebAssembly", "window"));
 
     /**
+     * The default to be deleted objects from V8.
+     *
+     * @since 0.1.0
+     */
+    public static final Set<String> DEFAULT_TO_BE_DELETED_OBJECT_SET = Collections.unmodifiableSet(SimpleSet.of(
+            "eval",
+            "Function",
+            "WebAssembly"));
+    /**
+     * The default to be frozen objects from V8.
+     *
+     * @since 0.1.0
+     */
+    public static final Set<String> DEFAULT_TO_BE_FROZEN_OBJECT_SET = Collections.unmodifiableSet(SimpleSet.of(
+            "Object", // Object must be the first.
+            "AggregateError",
+            "Array",
+            "ArrayBuffer",
+            "Atomics",
+            "BigInt",
+            "BigInt64Array",
+            "BigUint64Array",
+            "Boolean",
+            "DataView",
+            "Date",
+            "decodeURI",
+            "decodeURIComponent",
+            "encodeURI",
+            "encodeURIComponent",
+            "Error",
+            "escape",
+            "EvalError",
+            "FinalizationRegistry",
+            "Float32Array",
+            "Float64Array",
+            "Int8Array",
+            "Int16Array",
+            "Int32Array",
+            "isFinite",
+            "isNaN",
+            "JSON",
+            "Map",
+            "Math",
+            "Number",
+            "parseFloat",
+            "parseInt",
+            "Promise",
+            "Proxy",
+            "RangeError",
+            "ReferenceError",
+            "Reflect",
+            "RegExp",
+            "Set",
+            "SharedArrayBuffer",
+            "String",
+            "Symbol",
+            "SyntaxError",
+            "TypeError",
+            "Uint8Array",
+            "Uint8ClampedArray",
+            "Uint16Array",
+            "Uint32Array",
+            "unescape",
+            "URIError",
+            "WeakMap",
+            "WeakRef",
+            "WeakSet"));
+    /**
      * Default option is the most strict and secure option.
      * Most built-in objects and keywords are disabled.
      *
@@ -144,10 +219,10 @@ public final class JavetSanitizerOption {
     public static final JavetSanitizerOption Default = new JavetSanitizerOption("Default")
             .setListenerClass(JavetSanitizerSecurityCheckListener.class)
             .seal();
-
     private Map<String, Object> argumentMap;
     private Set<String> builtInObjectSet;
     private Set<String> disallowedIdentifierSet;
+    private String globalIdentifier;
     private boolean keywordAsyncEnabled;
     private boolean keywordAwaitEnabled;
     private boolean keywordDebuggerEnabled;
@@ -163,11 +238,14 @@ public final class JavetSanitizerOption {
     private Set<String> reservedIdentifierSet;
     private Set<String> reservedMutableIdentifierSet;
     private boolean sealed;
+    private Set<String> toBeDeletedIdentifierSet;
+    private Set<String> toBeFrozenIdentifierSet;
 
     private JavetSanitizerOption(String name) {
         argumentMap = new HashMap<>();
         builtInObjectSet = new HashSet<>(DEFAULT_BUILT_IN_OBJECT_SET);
         disallowedIdentifierSet = new HashSet<>(DEFAULT_DISALLOWED_IDENTIFIER_SET);
+        globalIdentifier = DEFAULT_GLOBAL_IDENTIFIER;
         keywordAsyncEnabled = false;
         keywordAwaitEnabled = false;
         keywordDebuggerEnabled = false;
@@ -182,6 +260,8 @@ public final class JavetSanitizerOption {
         reservedIdentifierMatcher = identifier -> false;
         reservedIdentifierSet = new HashSet<>(DEFAULT_RESERVED_IDENTIFIER_SET);
         reservedMutableIdentifierSet = new HashSet<>(DEFAULT_RESERVED_MUTABLE_IDENTIFIER_SET);
+        toBeDeletedIdentifierSet = new HashSet<>(DEFAULT_TO_BE_DELETED_OBJECT_SET);
+        toBeFrozenIdentifierSet = new HashSet<>(DEFAULT_TO_BE_FROZEN_OBJECT_SET);
         sealed = false;
     }
 
@@ -213,6 +293,16 @@ public final class JavetSanitizerOption {
      */
     public Set<String> getDisallowedIdentifierSet() {
         return disallowedIdentifierSet;
+    }
+
+    /**
+     * Gets global identifier.
+     *
+     * @return the global identifier
+     * @since 0.1.0
+     */
+    public String getGlobalIdentifier() {
+        return globalIdentifier;
     }
 
     /**
@@ -291,6 +381,26 @@ public final class JavetSanitizerOption {
      */
     public Set<String> getReservedMutableIdentifierSet() {
         return reservedMutableIdentifierSet;
+    }
+
+    /**
+     * Gets to be deleted identifier set.
+     *
+     * @return the to be deleted identifier set
+     * @since 0.1.0
+     */
+    public Set<String> getToBeDeletedIdentifierSet() {
+        return toBeDeletedIdentifierSet;
+    }
+
+    /**
+     * Gets to be frozen identifier set.
+     *
+     * @return the to be frozen identifier set
+     * @since 0.1.0
+     */
+    public Set<String> getToBeFrozenIdentifierSet() {
+        return toBeFrozenIdentifierSet;
     }
 
     /**
@@ -396,7 +506,23 @@ public final class JavetSanitizerOption {
         reservedFunctionIdentifierSet = Collections.unmodifiableSet(reservedFunctionIdentifierSet);
         reservedIdentifierSet = Collections.unmodifiableSet(reservedIdentifierSet);
         reservedMutableIdentifierSet = Collections.unmodifiableSet(reservedMutableIdentifierSet);
+        toBeDeletedIdentifierSet = Collections.unmodifiableSet(toBeDeletedIdentifierSet);
+        toBeFrozenIdentifierSet = Collections.unmodifiableSet(toBeFrozenIdentifierSet);
         sealed = true;
+        return this;
+    }
+
+    /**
+     * Sets global identifier.
+     *
+     * @param globalIdentifier the global identifier
+     * @return the self
+     * @since 0.1.0
+     */
+    public JavetSanitizerOption setGlobalIdentifier(String globalIdentifier) {
+        if (!sealed) {
+            this.globalIdentifier = globalIdentifier;
+        }
         return this;
     }
 
@@ -568,6 +694,7 @@ public final class JavetSanitizerOption {
         option.builtInObjectSet.addAll(builtInObjectSet);
         option.disallowedIdentifierSet.clear();
         option.disallowedIdentifierSet.addAll(disallowedIdentifierSet);
+        option.globalIdentifier = globalIdentifier;
         option.keywordAsyncEnabled = keywordAsyncEnabled;
         option.keywordAwaitEnabled = keywordAwaitEnabled;
         option.keywordDebuggerEnabled = keywordDebuggerEnabled;
@@ -583,6 +710,10 @@ public final class JavetSanitizerOption {
         option.reservedIdentifierSet.addAll(reservedIdentifierSet);
         option.reservedMutableIdentifierSet.clear();
         option.reservedMutableIdentifierSet.addAll(reservedMutableIdentifierSet);
+        option.toBeDeletedIdentifierSet.clear();
+        option.toBeDeletedIdentifierSet.addAll(toBeDeletedIdentifierSet);
+        option.toBeFrozenIdentifierSet.clear();
+        option.toBeFrozenIdentifierSet.addAll(toBeFrozenIdentifierSet);
         return option;
     }
 }
