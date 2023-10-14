@@ -23,7 +23,6 @@ AggregateError
 Array
 ArrayBuffer
 Atomics
-be
 BigInt
 BigInt64Array
 BigUint64Array
@@ -38,7 +37,6 @@ Error
 escape
 EvalError
 FinalizationRegistry
-first
 Float32Array
 Float64Array
 Int16Array
@@ -49,7 +47,6 @@ isNaN
 JSON
 Map
 Math
-must
 Number
 Object
 parseFloat
@@ -65,7 +62,6 @@ SharedArrayBuffer
 String
 Symbol
 SyntaxError
-the
 TypeError
 Uint16Array
 Uint32Array
