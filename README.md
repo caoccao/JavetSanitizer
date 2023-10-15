@@ -18,18 +18,52 @@ Javet Sanitizer is designed to protect the script engine from that kind of attac
 ## Features
 
 - AST Pattern Matching
-- [Built-in Object Protection](docs/feature_built_in_object_protection.md)
-- [Keyword Restriction](docs/feature_keyword_restriction.md)
-- [Function Restriction](docs/feature_function_restriction.md)
-- [Identifier Restriction](docs/feature_identifier_restriction.md)
-- [Identifier Deletion](docs/feature_identifier_deletion.md)
-- [Identifier Freeze](docs/feature_identifier_freeze.md)
+- [Built-in Object Protection](docs/features/built_in_object_protection.md)
+- [Keyword Restriction](docs/features/keyword_restriction.md)
+- [Function Restriction](docs/features/function_restriction.md)
+- [Identifier Restriction](docs/features/identifier_restriction.md)
+- [Identifier Deletion](docs/features/identifier_deletion.md)
+- [Identifier Freeze](docs/features/identifier_freeze.md)
 - Identifier Naming Convention
 - Complete Customization
 
 ## Quick Start
 
-- Download the Javet Sanitizer jar file from the latest [actions](https://github.com/caoccao/JavetSanitizer/actions).
+- Download the Javet Sanitizer jar file from the latest [actions](https://github.com/caoccao/JavetSanitizer/actions). There are 4 jar files supporting antlr v4.10 - v4.13. Please choose the right jar file matching your project.
+- Reference the downloaded jar file in your project.
+- Create a Java file as follows.
+
+```java
+public static void main(String[] args) {
+    JavetSanitizerStatementListChecker checker = new JavetSanitizerStatementListChecker();
+    String codeString = "const a = 1;";
+    try {
+        checker.check(codeString);
+        System.out.println(codeString + " // Valid.");
+    } catch (JavetSanitizerException ignored) {
+    }
+    codeString = "var a = 1;";
+    try {
+        checker.check(codeString);
+    } catch (JavetSanitizerException e) {
+        System.out.println(codeString + " // Invalid: " + e.getMessage());
+    }
+    codeString = "Object = {};";
+    try {
+        checker.check(codeString);
+    } catch (JavetSanitizerException e) {
+        System.out.println(codeString + " // Invalid: " + e.getMessage());
+    }
+}
+```
+
+- The output is as follows.
+
+```java
+const a = 1; // Valid.
+var a = 1; // Invalid: Keyword var is not allowed.
+Object = {}; // Invalid: Identifier Object is not allowed.
+```
 
 ## Document
 
