@@ -32,7 +32,7 @@ import java.util.function.Function;
  *
  * @since 0.1.0
  */
-public final class JavetSanitizerOption {
+public class JavetSanitizerOption {
     /**
      * Default name of global identifier.
      *
@@ -211,15 +211,15 @@ public final class JavetSanitizerOption {
             "WeakMap",
             "WeakRef",
             "WeakSet"));
+
     /**
      * Default option is the most strict and secure option.
      * Most built-in objects and keywords are disabled.
      *
      * @since 0.1.0
      */
-    public static final JavetSanitizerOption Default = new JavetSanitizerOption("Default")
-            .setListenerClass(JavetSanitizerSecurityCheckListener.class)
-            .seal();
+    public static final JavetSanitizerOption Default = new JavetSanitizerOption("Default").seal();
+
     private Map<String, Object> argumentMap;
     private Set<String> builtInObjectSet;
     private Set<String> disallowedIdentifierSet;
@@ -242,7 +242,7 @@ public final class JavetSanitizerOption {
     private List<String> toBeDeletedIdentifierList;
     private List<String> toBeFrozenIdentifierList;
 
-    private JavetSanitizerOption(String name) {
+    public JavetSanitizerOption(String name) {
         argumentMap = new HashMap<>();
         builtInObjectSet = new HashSet<>(DEFAULT_BUILT_IN_OBJECT_SET);
         disallowedIdentifierSet = new HashSet<>(DEFAULT_DISALLOWED_IDENTIFIER_SET);
