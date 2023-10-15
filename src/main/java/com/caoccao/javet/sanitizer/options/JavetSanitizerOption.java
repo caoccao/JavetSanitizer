@@ -16,14 +16,12 @@
 
 package com.caoccao.javet.sanitizer.options;
 
-import com.caoccao.javet.sanitizer.antlr.JavaScriptParserListener;
 import com.caoccao.javet.sanitizer.exceptions.JavetSanitizerException;
 import com.caoccao.javet.sanitizer.listeners.JavetSanitizerListener;
 import com.caoccao.javet.sanitizer.listeners.JavetSanitizerSecurityCheckListener;
 import com.caoccao.javet.sanitizer.utils.SimpleList;
 import com.caoccao.javet.sanitizer.utils.SimpleSet;
 
-import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.function.Function;
 
@@ -232,7 +230,8 @@ public class JavetSanitizerOption {
     private boolean keywordVarEnabled;
     private boolean keywordWithEnabled;
     private boolean keywordYieldEnabled;
-    private Class<? extends JavaScriptParserListener> listenerClass;
+    private JavetSanitizerListener listener;
+    private Function<JavetSanitizerOption, JavetSanitizerListener> listenerFunction;
     private String name;
     private Set<String> reservedFunctionIdentifierSet;
     private Function<String, Boolean> reservedIdentifierMatcher;
@@ -242,6 +241,11 @@ public class JavetSanitizerOption {
     private List<String> toBeDeletedIdentifierList;
     private List<String> toBeFrozenIdentifierList;
 
+    /**
+     * Instantiates a new Javet sanitizer option.
+     *
+     * @param name the name
+     */
     public JavetSanitizerOption(String name) {
         argumentMap = new HashMap<>();
         builtInObjectSet = new HashSet<>(DEFAULT_BUILT_IN_OBJECT_SET);
@@ -255,7 +259,8 @@ public class JavetSanitizerOption {
         keywordVarEnabled = false;
         keywordWithEnabled = false;
         keywordYieldEnabled = false;
-        listenerClass = JavetSanitizerSecurityCheckListener.class;
+        listener = null;
+        listenerFunction = JavetSanitizerSecurityCheckListener::new;
         this.name = Objects.requireNonNull(name);
         reservedFunctionIdentifierSet = new HashSet<>(DEFAULT_RESERVED_FUNCTION_IDENTIFIER_SET);
         reservedIdentifierMatcher = identifier -> false;
@@ -309,29 +314,18 @@ public class JavetSanitizerOption {
     /**
      * Gets listener.
      *
-     * @param <Listener> the type parameter
      * @return the listener
      * @throws JavetSanitizerException the javet sanitizer exception
      */
-    @SuppressWarnings("unchecked")
-    public <Listener extends JavetSanitizerListener> Listener getListener() throws JavetSanitizerException {
-        try {
-            Constructor<Listener> constructor =
-                    (Constructor<Listener>) listenerClass.getConstructor(JavetSanitizerOption.class);
-            return constructor.newInstance(this);
-        } catch (Throwable t) {
-            throw JavetSanitizerException.listenerNotFound(listenerClass.getName(), t);
+    public JavetSanitizerListener getListener() throws JavetSanitizerException {
+        if (listener == null) {
+            try {
+                listener = listenerFunction.apply(this);
+            } catch (Throwable t) {
+                throw JavetSanitizerException.listenerNotFound(listenerFunction.toString(), t);
+            }
         }
-    }
-
-    /**
-     * Gets listener class.
-     *
-     * @return the listener class
-     * @since 0.1.0
-     */
-    public Class<? extends JavaScriptParserListener> getListenerClass() {
-        return listenerClass;
+        return listener;
     }
 
     /**
@@ -640,15 +634,16 @@ public class JavetSanitizerOption {
     }
 
     /**
-     * Sets listener class.
+     * Sets listener function.
      *
-     * @param listenerClass the listener class
+     * @param listenerFunction the listener function
      * @return the self
      * @since 0.1.0
      */
-    public JavetSanitizerOption setListenerClass(Class<? extends JavaScriptParserListener> listenerClass) {
+    public JavetSanitizerOption setListenerFunction(
+            Function<JavetSanitizerOption, JavetSanitizerListener> listenerFunction) {
         if (!sealed) {
-            this.listenerClass = Objects.requireNonNull(listenerClass);
+            this.listenerFunction = listenerFunction;
         }
         return this;
     }
@@ -703,7 +698,7 @@ public class JavetSanitizerOption {
         option.keywordImportEnabled = keywordImportEnabled;
         option.keywordWithEnabled = keywordWithEnabled;
         option.keywordYieldEnabled = keywordYieldEnabled;
-        option.listenerClass = listenerClass;
+        option.listenerFunction = listenerFunction;
         option.reservedFunctionIdentifierSet.clear();
         option.reservedFunctionIdentifierSet.addAll(reservedFunctionIdentifierSet);
         option.reservedIdentifierMatcher = reservedIdentifierMatcher;
