@@ -14,6 +14,27 @@
  * limitations under the License.
  */
 
+import org.gradle.internal.os.OperatingSystem
+
+object Config {
+    object Projects {
+        // https://mvnrepository.com/artifact/org.antlr/antlr4
+        const val ANTLR4 = "org.antlr:antlr4:${Versions.ANTLR4}"
+
+        const val JAVET = "com.caoccao.javet:javet:${Versions.JAVET}"
+        const val JAVET_LINUX_ARM64 = "com.caoccao.javet:javet-linux-arm64:${Versions.JAVET}"
+        const val JAVET_MACOS = "com.caoccao.javet:javet-macos:${Versions.JAVET}"
+        const val JUNIT_BOM = "org.junit:junit-bom:${Versions.JUNIT}"
+        const val JUNIT_JUPITER = "org.junit.jupiter:junit-jupiter:${Versions.JUNIT}"
+    }
+
+    object Versions {
+        const val ANTLR4 = "4.13.1"
+        const val JAVET = "3.0.0"
+        const val JUNIT = "5.10.0"
+    }
+}
+
 plugins {
     id("java")
 }
@@ -26,14 +47,19 @@ repositories {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.antlr/antlr4
-    implementation("org.antlr:antlr4:4.13.1")
+    implementation(Config.Projects.ANTLR4)
 
-    // https://mvnrepository.com/artifact/org.junit/junit-bom
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+    val os = OperatingSystem.current()
+    val cpuArch = System.getProperty("os.arch")
+    if (os.isMacOsX) {
+        testImplementation(Config.Projects.JAVET_MACOS)
+    } else if (os.isLinux && (cpuArch.equals("aarch64") || cpuArch.equals("arm64"))) {
+        testImplementation(Config.Projects.JAVET_LINUX_ARM64)
+    } else {
+        testImplementation(Config.Projects.JAVET)
+    }
+    testImplementation(platform(Config.Projects.JUNIT_BOM))
+    testImplementation(Config.Projects.JUNIT_JUPITER)
 }
 
 tasks.test {

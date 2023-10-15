@@ -34,6 +34,7 @@ public class TutorialPlayWithFunctionRestriction {
         JavetSanitizerOption option = JavetSanitizerOption.Default.toClone();
         option.getReservedFunctionIdentifierSet().remove("main");
         option.getReservedFunctionIdentifierSet().add("myMain");
+        option.seal();
         // Check the script with the new option.
         try {
             new JavetSanitizerModuleChecker(option).check(codeString);
