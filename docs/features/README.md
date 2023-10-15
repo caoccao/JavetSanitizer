@@ -7,5 +7,5 @@
 - [Identifier Restriction](identifier_restriction.md)
 - [Identifier Deletion](identifier_deletion.md)
 - [Identifier Freeze](identifier_freeze.md)
-- Identifier Naming Convention
+- [Identifier Naming Convention](identifier_naming_convention.md)
 - Complete Customization

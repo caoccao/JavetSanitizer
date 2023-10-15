@@ -24,7 +24,7 @@ Javet Sanitizer is designed to protect the script engine from that kind of attac
 - [Identifier Restriction](docs/features/identifier_restriction.md)
 - [Identifier Deletion](docs/features/identifier_deletion.md)
 - [Identifier Freeze](docs/features/identifier_freeze.md)
-- Identifier Naming Convention
+- [Identifier Naming Convention](docs/features/identifier_naming_convention.md)
 - Complete Customization
 
 ## Quick Start

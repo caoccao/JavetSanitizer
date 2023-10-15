@@ -1,8 +1,6 @@
 # Feature - Built-in Object Protection
 
-## Rules
-
-The default built-in objects are protected by JavetSanitizer under the following rules:
+Javet Sanitizer has built-in support for protecting the built-in objects. The rules are as follows.
 
 - Built-in objects cannot be in the left-hand side in assignment.
 
