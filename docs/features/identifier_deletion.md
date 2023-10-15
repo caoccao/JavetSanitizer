@@ -24,3 +24,5 @@ eval
 Function
 WebAssembly
 ```
+
+Please refer to the [tutorial](../tutorials/play_with_identifier_deletion.md) for more details.

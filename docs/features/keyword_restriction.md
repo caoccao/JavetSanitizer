@@ -27,3 +27,5 @@ var
 with
 yield
 ```
+
+Please refer to the [tutorial](../tutorials/play_with_keyword_restriction.md) for more details.

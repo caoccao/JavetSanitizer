@@ -31,3 +31,5 @@ The default must-have function list is as follows:
 ```js
 main
 ```
+
+Please refer to the [tutorial](../tutorials/play_with_function_restriction.md) for more details.
