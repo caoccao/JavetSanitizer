@@ -31,7 +31,7 @@ Javet Sanitizer is designed to protect the script engine from that kind of attac
 
 - Download the Javet Sanitizer jar file from the latest [actions](https://github.com/caoccao/JavetSanitizer/actions). There are 4 jar files supporting antlr v4.10 - v4.13. Please choose the right jar file matching your project.
 - Reference the downloaded jar file in your project.
-- Create a Java file as follows.
+- Create a Java [file](src/test/java/com/caoccao/javet/sanitizer/tutorials/TutorialQuickStart.java) as follows.
 
 ```java
 public static void main(String[] args) {
@@ -67,6 +67,7 @@ Object = {}; // Invalid: Identifier Object is not allowed.
 
 ## Document
 
+- [Tutorials](docs/tutorials/)
 - [Development](docs/development.md)
 - [Errors](docs/errors.md)
 
