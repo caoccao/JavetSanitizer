@@ -4,7 +4,7 @@ There are a set of [keywords](../features/keyword_restriction.md) that cannot be
 
 ## Sample Keyword - import
 
-By default, `import` is disallowed so that the script cannot reference any modules. If you check a script in `JavetSanitizerModuleChecker` with the default option, you will get an error. You may create your own option with keyword `import` enabled and the same script will pass the check.
+By default, keyword `import` is disallowed so that the script cannot reference any modules. If you check a script with keyword `import` in `JavetSanitizerModuleChecker` with the default option, you will get an error. You may create your own option with keyword `import` enabled and the same script will pass the check.
 
 ```java
 String codeString = "import { x } from 'x.mjs'; function main() {}";
