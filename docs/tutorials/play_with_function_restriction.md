@@ -14,7 +14,9 @@ try {
 } catch (JavetSanitizerException e) {
     System.out.println(e.getMessage());
 }
+
 System.out.println("----------------------------------------");
+
 // Create a new option with keyword import enabled.
 JavetSanitizerOption option = JavetSanitizerOption.Default.toClone();
 option.getReservedFunctionIdentifierSet().remove("main");

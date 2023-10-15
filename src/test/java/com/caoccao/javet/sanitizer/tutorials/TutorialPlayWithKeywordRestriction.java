@@ -30,7 +30,9 @@ public class TutorialPlayWithKeywordRestriction {
             System.out.println(e.getMessage());
             System.out.println(e.getContext());
         }
+
         System.out.println("----------------------------------------");
+
         // Create a new option with keyword import enabled.
         JavetSanitizerOption option = JavetSanitizerOption.Default.toClone()
                 .setKeywordImportEnabled(true)

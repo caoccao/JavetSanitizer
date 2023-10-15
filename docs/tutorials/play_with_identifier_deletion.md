@@ -17,7 +17,9 @@ try (V8Runtime v8Runtime = V8Host.getV8Instance().createV8Runtime()) {
     System.out.println(e.getScriptingError());
 } catch (JavetException ignored) {
 }
+
 System.out.println("----------------------------------------");
+
 // Create a new option with WebAssembly allowed.
 JavetSanitizerOption option = JavetSanitizerOption.Default.toClone();
 option.getToBeDeletedIdentifierList().remove("WebAssembly");

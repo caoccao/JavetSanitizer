@@ -36,23 +36,29 @@ Javet Sanitizer is designed to protect the script engine from that kind of attac
 ```java
 public static void main(String[] args) {
     JavetSanitizerStatementListChecker checker = new JavetSanitizerStatementListChecker();
+
+    // 1. Check if keyword const can be used.
     String codeString = "const a = 1;";
     try {
         checker.check(codeString);
-        System.out.println(codeString + " // Valid.");
+        System.out.println("1. " + codeString + " // Valid.");
     } catch (JavetSanitizerException ignored) {
     }
+
+    // 2. Check if keyword var can be used.
     codeString = "var a = 1;";
     try {
         checker.check(codeString);
     } catch (JavetSanitizerException e) {
-        System.out.println(codeString + " // Invalid: " + e.getMessage());
+        System.out.println("2. " + codeString + " // Invalid: " + e.getMessage());
     }
+
+    // 3. Check if Object is mutable.
     codeString = "Object = {};";
     try {
         checker.check(codeString);
     } catch (JavetSanitizerException e) {
-        System.out.println(codeString + " // Invalid: " + e.getMessage());
+        System.out.println("3. " + codeString + " // Invalid: " + e.getMessage());
     }
 }
 ```
@@ -60,9 +66,9 @@ public static void main(String[] args) {
 - The output is as follows.
 
 ```java
-const a = 1; // Valid.
-var a = 1; // Invalid: Keyword var is not allowed.
-Object = {}; // Invalid: Identifier Object is not allowed.
+1. const a = 1; // Valid.
+2. var a = 1; // Invalid: Keyword var is not allowed.
+3. Object = {}; // Invalid: Identifier Object is not allowed.
 ```
 
 ## Document
