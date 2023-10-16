@@ -24,7 +24,11 @@ object Config {
         const val JAVET = "com.caoccao.javet:javet:${Versions.JAVET}"
         const val JAVET_LINUX_ARM64 = "com.caoccao.javet:javet-linux-arm64:${Versions.JAVET}"
         const val JAVET_MACOS = "com.caoccao.javet:javet-macos:${Versions.JAVET}"
+
+        // https://mvnrepository.com/artifact/org.junit/junit-bom
         const val JUNIT_BOM = "org.junit:junit-bom:${Versions.JUNIT}"
+
+        // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
         const val JUNIT_JUPITER = "org.junit.jupiter:junit-jupiter:${Versions.JUNIT}"
     }
 

@@ -23,13 +23,13 @@ import com.caoccao.javet.interop.V8Runtime;
 import com.caoccao.javet.sanitizer.codegen.JavetSanitizerFridge;
 import com.caoccao.javet.sanitizer.options.JavetSanitizerOption;
 
-public class TutorialPlayWithIdentifierDeletion {
+public class TutorialPlayWithIdentifierFreeze {
     public static void main(String[] args) {
         try (V8Runtime v8Runtime = V8Host.getV8Instance().createV8Runtime()) {
             // Initialize V8 with the default option.
             String codeString = JavetSanitizerFridge.generate(JavetSanitizerOption.Default);
             v8Runtime.getExecutor(codeString).executeVoid();
-            codeString = "const a = WebAssembly;";
+            codeString = "JSON.stringify = (str) => {}";
             v8Runtime.getExecutor(codeString).setResourceName("test.js").executeVoid();
         } catch (JavetExecutionException e) {
             System.out.println(e.getScriptingError());
@@ -38,15 +38,15 @@ public class TutorialPlayWithIdentifierDeletion {
 
         System.out.println("----------------------------------------");
 
-        // Create a new option with WebAssembly allowed.
+        // Create a new option with JSON allowed.
         JavetSanitizerOption option = JavetSanitizerOption.Default.toClone();
-        option.getToBeDeletedIdentifierList().remove("WebAssembly");
+        option.getToBeFrozenIdentifierList().remove("JSON");
         option.seal();
         try (V8Runtime v8Runtime = V8Host.getV8Instance().createV8Runtime()) {
             // Initialize V8 with the new option.
             String codeString = JavetSanitizerFridge.generate(option);
             v8Runtime.getExecutor(codeString).executeVoid();
-            codeString = "const a = WebAssembly;";
+            codeString = "JSON.stringify = (str) => {}";
             v8Runtime.getExecutor(codeString).setResourceName("test.js").executeVoid();
             System.out.println(codeString + " // Valid");
         } catch (JavetExecutionException e) {

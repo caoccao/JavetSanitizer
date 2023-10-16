@@ -1,17 +1,17 @@
-# Tutorial - Play with Identifier Deletion
+# Tutorial - Play with Identifier Freeze
 
-There are a set of [identifiers](../features/identifier_deletion.md) that can be deleted in V8.
+There are a set of [identifiers](../features/identifier_freeze.md) that can be frozen in V8.
 
-## Sample Identifier - WebAssembly
+## Sample Identifier - JSON
 
-By default, `WebAssembly` is deleted so that there is not way of accessing `WebAssembly` in V8. If you check a script with `WebAssembly` with the default option, you will get an error. You may create your own option with a set of new identifiers and the same script will pass the check.
+By default, `JSON` is frozen so that there is not way of tampering `JSON.stringify`, `JSON.parse` in V8. If you check a script with `JSON.stringify` to be replaced with the default option, you will get an error. You may create your own option with a set of new identifiers and the same script will pass the check.
 
 ```java
 try (V8Runtime v8Runtime = V8Host.getV8Instance().createV8Runtime()) {
     // Initialize V8 with the default option.
     String codeString = JavetSanitizerFridge.generate(JavetSanitizerOption.Default);
     v8Runtime.getExecutor(codeString).executeVoid();
-    codeString = "const a = WebAssembly;";
+    codeString = "JSON.stringify = (str) => {}";
     v8Runtime.getExecutor(codeString).setResourceName("test.js").executeVoid();
 } catch (JavetExecutionException e) {
     System.out.println(e.getScriptingError());
@@ -20,15 +20,15 @@ try (V8Runtime v8Runtime = V8Host.getV8Instance().createV8Runtime()) {
 
 System.out.println("----------------------------------------");
 
-// Create a new option with WebAssembly allowed.
+// Create a new option with JSON allowed.
 JavetSanitizerOption option = JavetSanitizerOption.Default.toClone();
-option.getToBeDeletedIdentifierList().remove("WebAssembly");
+option.getToBeFrozenIdentifierList().remove("JSON");
 option.seal();
 try (V8Runtime v8Runtime = V8Host.getV8Instance().createV8Runtime()) {
     // Initialize V8 with the new option.
     String codeString = JavetSanitizerFridge.generate(option);
     v8Runtime.getExecutor(codeString).executeVoid();
-    codeString = "const a = WebAssembly;";
+    codeString = "JSON.stringify = (str) => {}";
     v8Runtime.getExecutor(codeString).setResourceName("test.js").executeVoid();
     System.out.println(codeString + " // Valid");
 } catch (JavetExecutionException e) {
@@ -37,14 +37,14 @@ try (V8Runtime v8Runtime = V8Host.getV8Instance().createV8Runtime()) {
 }
 
 /*
-ReferenceError: WebAssembly is not defined
+TypeError: Cannot assign to read only property 'stringify' of object '#<Object>'
 Resource: test.js
-Source Code: const a = WebAssembly;
+Source Code: JSON.stringify = (str) => {}
 Line Number: 1
-Column: 10, 11
-Position: 10, 11
+Column: 15, 16
+Position: 15, 16
 ----------------------------------------
-const a = WebAssembly; // Valid
+JSON.stringify = (str) => {} // Valid
 */
 ```
 
