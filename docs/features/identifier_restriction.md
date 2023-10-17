@@ -46,3 +46,11 @@ WebAssembly
 window
 XMLHttpRequest
 ```
+
+## Why are global and globalThis disallowed?
+
+It's so easy to access or change `global` or `globalThis` in a script to impact the next script to be executed. In order to fully reuse the V8 runtime, such behavior is addressed as an error in the sanity check.
+
+## Why are apply, bind, call and eval disallowed?
+
+`apply`, `bind`, `call` and `eval` are commonly used in the JS obfuscators. The obfuscated code can bypass the sanity check, is hard to read and maintain.
