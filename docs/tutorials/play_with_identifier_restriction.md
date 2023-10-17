@@ -1,6 +1,6 @@
 # Tutorial - Play with Identifier Restriction
 
-There are a set of [identifiers](../features/identifier_restriction.md) that cannot be used to prevent identifier confusion.
+There are a set of [identifiers](../features/identifier_restriction.md) that cannot be referenced to prevent malicious script execution.
 
 ## Sample Identifier - eval
 
