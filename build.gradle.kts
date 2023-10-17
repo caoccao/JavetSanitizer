@@ -57,7 +57,7 @@ dependencies {
     val cpuArch = System.getProperty("os.arch")
     if (os.isMacOsX) {
         testImplementation(Config.Projects.JAVET_MACOS)
-    } else if (os.isLinux && (cpuArch.equals("aarch64") || cpuArch.equals("arm64"))) {
+    } else if (os.isLinux && (cpuArch == "aarch64" || cpuArch == "arm64")) {
         testImplementation(Config.Projects.JAVET_LINUX_ARM64)
     } else {
         testImplementation(Config.Projects.JAVET)
