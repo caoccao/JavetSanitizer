@@ -19,6 +19,7 @@ env:
   ANTLR_4_12: 4.12.0
   ANTLR_4_11: 4.11.1
   ANTLR_4_10: 4.10.1
+  ANTLR_4_9: 4.9.3
   JAVET_SANITIZER_VERSION: 0.1.0
 
 jobs:
@@ -207,4 +208,56 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_10 }}
+        path: build/libs/*.jar
+
+  build_for_antlr_4_9:
+    name: Build for antlr v4.9.x
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout the code
+      uses: actions/checkout@v3
+
+    - name: Setup JDK 11
+      uses: actions/setup-java@v3
+      with:
+        distribution: corretto
+        java-version: 11
+
+    - name: Build Grammar
+      run: |
+        cd ../
+        curl -O https://www.antlr.org/download/antlr-${{ env.ANTLR_4_9 }}-complete.jar
+        git clone https://github.com/caoccao/grammars-v4.git
+        cd grammars-v4/javascript/javascript
+        java -Xmx500M -cp "../../../antlr-${{ env.ANTLR_4_9 }}-complete.jar:$CLASSPATH" org.antlr.v4.Tool -package com.caoccao.javet.sanitizer.antlr -o gen *.g4
+        cd ../../../JavetSanitizer
+        cp -f ../grammars-v4/javascript/javascript/gen/*.java src/main/java/com/caoccao/javet/sanitizer/antlr
+        cp -f ../grammars-v4/javascript/javascript/Java/*.java src/main/java/com/caoccao/javet/sanitizer/antlr
+        sed -i 's/@link JavaScriptParser#singleExpression/@link JavaScriptParser#singleExpression()/g' src/main/java/com/caoccao/javet/sanitizer/antlr/JavaScriptParserListener.java
+        sed -i '1 i package com.caoccao.javet.sanitizer.antlr;\n' src/main/java/com/caoccao/javet/sanitizer/antlr/JavaScriptLexerBase.java
+        sed -i '1 i package com.caoccao.javet.sanitizer.antlr;\n' src/main/java/com/caoccao/javet/sanitizer/antlr/JavaScriptParserBase.java
+
+    - name: Setup JDK 8
+      uses: actions/setup-java@v3
+      with:
+        distribution: corretto
+        java-version: 8
+
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 8.2
+
+    - name: Build the Artifact
+      run: |
+        sed 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_9 }}"/g' build.gradle.kts
+        gradle build
+        gradle javadoc
+
+    - name: Upload the Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_9 }}
         path: build/libs/*.jar
