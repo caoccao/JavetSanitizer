@@ -34,7 +34,7 @@ public class TestJavetSanitizerAnonymousFunctionChecker extends BaseTestJavetSan
                         null));
         assertException(
                 () -> new JavetSanitizerAnonymousFunctionChecker().check("const a;"),
-                200, "Token const is invalid. Expecting {'(', 'function', 'as', 'from', 'async', NonStrictLet, Identifier}.",
+                200, "Token const is invalid. Expecting {'(', 'function', 'as', 'from', 'async', 'yield', NonStrictLet, Identifier}.",
                 "Source Code: const\n" +
                         "Line Number: 1, 1\n" +
                         "Column: 0, 5\n" +
