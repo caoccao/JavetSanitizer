@@ -30,55 +30,37 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestCompromiseV8 {
-
-    protected V8Runtime getV8Runtime() throws JavetException {
+    protected V8Runtime getV8Runtime(FridgeStatus fridgeStatus) throws JavetException {
         V8Runtime v8Runtime = V8Host.getV8Instance().createV8Runtime();
-        v8Runtime.getExecutor(JavetSanitizerFridge.generate(JavetSanitizerOption.Default)).executeVoid();
+        if (fridgeStatus == FridgeStatus.Enabled) {
+            v8Runtime.getExecutor(JavetSanitizerFridge.generate(JavetSanitizerOption.Default)).executeVoid();
+        }
         return v8Runtime;
     }
 
     @Test
-    public void testAccessGlobalThis() {
-        JavetSanitizerSingleExpressionChecker checker = new JavetSanitizerSingleExpressionChecker();
-        assertEquals(
-                "Identifier globalThis is not allowed.",
-                assertThrows(
-                        JavetSanitizerException.class,
-                        () -> checker.check("globalThis.a = 1;"),
-                        "globalThis is inaccessible.")
-                        .getMessage());
-        assertEquals(
-                "Identifier global is not allowed.",
-                assertThrows(
-                        JavetSanitizerException.class,
-                        () -> checker.check("global.a = 1;"),
-                        "global is inaccessible.")
-                        .getMessage());
-    }
-
-    @Test
-    public void testCallApplyBindCall() throws JavetException {
+    public void testCallApplyBindCall() {
         JavetSanitizerSingleExpressionChecker checker = new JavetSanitizerSingleExpressionChecker();
         assertEquals(
                 "Identifier apply is not allowed.",
                 assertThrows(
                         JavetSanitizerException.class,
                         () -> checker.check("a.apply(b);"),
-                        "apply is inaccessible.")
+                        "apply should not pass the check.")
                         .getMessage());
         assertEquals(
                 "Identifier bind is not allowed.",
                 assertThrows(
                         JavetSanitizerException.class,
                         () -> checker.check("a.bind(b);"),
-                        "bind is inaccessible.")
+                        "bind should not pass the check.")
                         .getMessage());
         assertEquals(
                 "Identifier call is not allowed.",
                 assertThrows(
                         JavetSanitizerException.class,
                         () -> checker.check("a.call(b);"),
-                        "call is inaccessible.")
+                        "call should not pass the check.")
                         .getMessage());
     }
 
@@ -90,29 +72,81 @@ public class TestCompromiseV8 {
                 assertThrows(
                         JavetSanitizerException.class,
                         () -> checker.check("eval('1');"),
-                        "eval is inaccessible.")
+                        "eval should not pass the check.")
                         .getMessage());
-        try (V8Runtime v8Runtime = getV8Runtime()) {
+        try (V8Runtime v8Runtime = getV8Runtime(FridgeStatus.Enabled)) {
             assertEquals(
                     "ReferenceError: eval is not defined",
                     assertThrows(
                             JavetExecutionException.class,
                             () -> v8Runtime.getExecutor("eval('1');").executeVoid(),
-                            "eval is inaccessible.")
+                            "eval should be inaccessible in V8.")
+                            .getMessage());
+        }
+        try (V8Runtime v8Runtime = getV8Runtime(FridgeStatus.Disabled)) {
+            assertEquals(
+                    1,
+                    v8Runtime.getExecutor("eval('1');").executeInteger(),
+                    "eval should be executed successfully in V8.");
+            v8Runtime.allowEval(false);
+            assertEquals(
+                    "EvalError: Code generation from strings disallowed for this context",
+                    assertThrows(
+                            JavetExecutionException.class,
+                            () -> v8Runtime.getExecutor("eval('1');").executeVoid(),
+                            "eval should be disallowed.")
                             .getMessage());
         }
     }
 
     @Test
     public void testUpdateBuiltInObjects() throws JavetException {
-        try (V8Runtime v8Runtime = getV8Runtime()) {
+        JavetSanitizerSingleExpressionChecker checker = new JavetSanitizerSingleExpressionChecker();
+        assertEquals(
+                "Identifier Object is not allowed.",
+                assertThrows(
+                        JavetSanitizerException.class,
+                        () -> checker.check("Object = 1;"),
+                        "Object should not pass the check.")
+                        .getMessage());
+        try (V8Runtime v8Runtime = getV8Runtime(FridgeStatus.Enabled)) {
             assertEquals(
                     "TypeError: Assignment to constant variable.",
                     assertThrows(
                             JavetExecutionException.class,
-                            () -> v8Runtime.getExecutor("Object = {};").executeVoid(),
+                            () -> v8Runtime.getExecutor("Object = 1;").executeVoid(),
                             "Object should be immutable.")
                             .getMessage());
         }
+        try (V8Runtime v8Runtime = getV8Runtime(FridgeStatus.Disabled)) {
+            assertEquals(
+                    1,
+                    v8Runtime.getExecutor("Object = 1; Object").executeInteger(),
+                    "Object should be updated.");
+        }
+    }
+
+    @Test
+    public void testUpdateGlobal() {
+        JavetSanitizerSingleExpressionChecker checker = new JavetSanitizerSingleExpressionChecker();
+        assertEquals(
+                "Identifier globalThis is not allowed.",
+                assertThrows(
+                        JavetSanitizerException.class,
+                        () -> checker.check("globalThis.a = 1;"),
+                        "globalThis should be inaccessible.")
+                        .getMessage());
+        assertEquals(
+                "Identifier global is not allowed.",
+                assertThrows(
+                        JavetSanitizerException.class,
+                        () -> checker.check("global.a = 1;"),
+                        "global should be inaccessible.")
+                        .getMessage());
+    }
+
+    public enum FridgeStatus {
+        Disabled,
+        Enabled,
     }
 }
