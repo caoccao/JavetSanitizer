@@ -19,8 +19,10 @@ package com.caoccao.javet.sanitizer.checkers;
 import com.caoccao.javet.sanitizer.exceptions.JavetSanitizerException;
 import com.caoccao.javet.sanitizer.options.JavetSanitizerOption;
 import com.caoccao.javet.sanitizer.utils.SimpleList;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestJavetSanitizerModuleChecker extends BaseTestJavetSanitizerChecker {
     @Test
@@ -80,21 +82,28 @@ public class TestJavetSanitizerModuleChecker extends BaseTestJavetSanitizerCheck
 
     @Test
     public void testValidStatements() throws JavetSanitizerException {
-        Assertions.assertTrue(
+        assertTrue(
                 new JavetSanitizerModuleChecker().check("function main() {}"),
                 "Function main() should pass.");
         JavetSanitizerOption option = JavetSanitizerOption.Default.toClone();
         option.getReservedFunctionIdentifierSet().clear();
         option.getReservedFunctionIdentifierSet().add("a");
         option.seal();
-        Assertions.assertTrue(
-                new JavetSanitizerModuleChecker(option).check("function a() {} function $b($c) {}"),
+        JavetSanitizerModuleChecker checker = new JavetSanitizerModuleChecker(option);
+        assertTrue(
+                checker.check("function a() {} function $b($c) {}"),
                 "Function a() and $b($c) should pass.");
+        assertEquals(2, checker.getFunctionParserMap().size(), "There should be 2 functions.");
+        assertTrue(checker.getFunctionParserMap().containsKey("a"), "a() should be found.");
+        assertTrue(checker.getFunctionParserMap().containsKey("$b"), "$b() should be found.");
         option = JavetSanitizerOption.Default.toClone()
                 .setKeywordImportEnabled(true)
                 .seal();
-        Assertions.assertTrue(
-                new JavetSanitizerModuleChecker(option).check("import { x } from 'x.mjs'; function main() {}"),
+        checker = new JavetSanitizerModuleChecker(option);
+        assertTrue(
+                checker.check("import { x } from 'x.mjs'; function main() {}"),
                 "Dynamic import should pass.");
+        assertEquals(1, checker.getFunctionParserMap().size(), "There should be 1 functions.");
+        assertTrue(checker.getFunctionParserMap().containsKey("main"), "main() should be found.");
     }
 }

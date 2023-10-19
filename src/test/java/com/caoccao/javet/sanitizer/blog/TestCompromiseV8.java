@@ -20,14 +20,15 @@ import com.caoccao.javet.exceptions.JavetException;
 import com.caoccao.javet.exceptions.JavetExecutionException;
 import com.caoccao.javet.interop.V8Host;
 import com.caoccao.javet.interop.V8Runtime;
+import com.caoccao.javet.sanitizer.checkers.JavetSanitizerModuleChecker;
 import com.caoccao.javet.sanitizer.checkers.JavetSanitizerSingleExpressionChecker;
+import com.caoccao.javet.sanitizer.checkers.JavetSanitizerStatementListChecker;
 import com.caoccao.javet.sanitizer.codegen.JavetSanitizerFridge;
 import com.caoccao.javet.sanitizer.exceptions.JavetSanitizerException;
 import com.caoccao.javet.sanitizer.options.JavetSanitizerOption;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCompromiseV8 {
     protected V8Runtime getV8Runtime(FridgeStatus fridgeStatus) throws JavetException {
@@ -100,6 +101,96 @@ public class TestCompromiseV8 {
     }
 
     @Test
+    public void testKeywordAsyncAwait() {
+        JavetSanitizerSingleExpressionChecker checker = new JavetSanitizerSingleExpressionChecker();
+        assertEquals(
+                "Identifier Promise is not allowed.",
+                assertThrows(
+                        JavetSanitizerException.class,
+                        () -> checker.check("new Promise((resolve, reject) => {};"),
+                        "Promise should not pass the check.")
+                        .getMessage());
+        assertEquals(
+                "Keyword async is not allowed.",
+                assertThrows(
+                        JavetSanitizerException.class,
+                        () -> checker.check("async function a() {}"),
+                        "async should not pass the check.")
+                        .getMessage());
+        assertEquals(
+                "Keyword await is not allowed.",
+                assertThrows(
+                        JavetSanitizerException.class,
+                        () -> checker.check("await f();"),
+                        "await should not pass the check.")
+                        .getMessage());
+    }
+
+    @Test
+    public void testKeywordVarLetConst() throws JavetSanitizerException {
+        JavetSanitizerStatementListChecker checker = new JavetSanitizerStatementListChecker();
+        assertEquals(
+                "Keyword var is not allowed.",
+                assertThrows(
+                        JavetSanitizerException.class,
+                        () -> checker.check("var a = 1;"),
+                        "var should not pass the check.")
+                        .getMessage());
+        assertTrue(checker.check("let a = 1;"), "let should pass the check.");
+        assertTrue(checker.check("const a = 1;"), "const should pass the check.");
+    }
+
+    @Test
+    public void testModules() throws JavetSanitizerException {
+        {
+            JavetSanitizerModuleChecker checker = new JavetSanitizerModuleChecker();
+            assertEquals(
+                    "Token VariableStatementContext is invalid. Expecting FunctionDeclarationContext.",
+                    assertThrows(
+                            JavetSanitizerException.class,
+                            () -> checker.check("const a = 1;"),
+                            "Variable statement should not pass the check.")
+                            .getMessage());
+            assertEquals(
+                    "Function main is not found.",
+                    assertThrows(
+                            JavetSanitizerException.class,
+                            () -> checker.check("function a() {}"),
+                            "main() should be reported missing.")
+                            .getMessage());
+            assertTrue(checker.check("function main() {} function a() {}"), "main() should pass the check.");
+            assertEquals(2, checker.getFunctionParserMap().size(), "There should be 2 functions.");
+            assertTrue(checker.getFunctionParserMap().containsKey("main"), "main() should be found.");
+            assertTrue(checker.getFunctionParserMap().containsKey("a"), "a() should be found.");
+            assertEquals(
+                    "Keyword import is not allowed.",
+                    assertThrows(
+                            JavetSanitizerException.class,
+                            () -> checker.check("import { a } from 'a.js'; function main() {}"),
+                            "import should not pass the check.")
+                            .getMessage());
+        }
+        {
+            JavetSanitizerOption option = JavetSanitizerOption.Default.toClone()
+                    .setKeywordImportEnabled(true)
+                    .seal();
+            JavetSanitizerModuleChecker checker = new JavetSanitizerModuleChecker(option);
+            assertTrue(
+                    checker.check("import { x } from 'x.mjs'; function main() {}"),
+                    "Dynamic import should pass.");
+            assertEquals(1, checker.getFunctionParserMap().size(), "There should be 1 functions.");
+            assertTrue(checker.getFunctionParserMap().containsKey("main"), "main() should be found.");
+            assertEquals(
+                    "Token ImportStatementContext is invalid. Expecting FunctionDeclarationContext.",
+                    assertThrows(
+                            JavetSanitizerException.class,
+                            () -> checker.check("function main() {} import { a } from 'a.js';"),
+                            "import should not pass the check.")
+                            .getMessage());
+        }
+    }
+
+    @Test
     public void testUpdateBuiltInObjects() throws JavetException {
         JavetSanitizerSingleExpressionChecker checker = new JavetSanitizerSingleExpressionChecker();
         assertEquals(
@@ -142,6 +233,18 @@ public class TestCompromiseV8 {
                         JavetSanitizerException.class,
                         () -> checker.check("global.a = 1;"),
                         "global should be inaccessible.")
+                        .getMessage());
+    }
+
+    @Test
+    public void testUpdatePrototype() {
+        JavetSanitizerSingleExpressionChecker checker = new JavetSanitizerSingleExpressionChecker();
+        assertEquals(
+                "Identifier prototype is not allowed.",
+                assertThrows(
+                        JavetSanitizerException.class,
+                        () -> checker.check("A.prototype.x = () => {};"),
+                        "prototype should not pass the check.")
                         .getMessage());
     }
 

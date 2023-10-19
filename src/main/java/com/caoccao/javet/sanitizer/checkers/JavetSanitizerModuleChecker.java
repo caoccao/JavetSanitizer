@@ -77,9 +77,7 @@ public class JavetSanitizerModuleChecker extends JavetSanitizerStatementListChec
             JavaScriptFunctionDeclarationParser javaScriptFunctionDeclarationParser =
                     statementParser.getJavaScriptFunctionDeclarationParser(0).parse();
             String functionIdentifier = javaScriptFunctionDeclarationParser.getIdentifier();
-            if (reservedFunctionIdentifierSet.contains(functionIdentifier)) {
-                functionParserMap.put(functionIdentifier, javaScriptFunctionDeclarationParser);
-            }
+            functionParserMap.put(functionIdentifier, javaScriptFunctionDeclarationParser);
         }
         validateFunctions();
         return true;
