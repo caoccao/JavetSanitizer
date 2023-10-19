@@ -45,7 +45,8 @@ public final class JavetSanitizerFridge {
             sb.append("  delete ").append(option.getGlobalIdentifier()).append(".").append(object).append(";\n");
             sb.append("  return _").append(object).append(";\n");
             sb.append("})();\n");
-            sb.append("Object.freeze(").append(object).append(", ").append(object).append(".prototype);\n\n");
+            sb.append("Object.freeze(").append(object).append(");\n");
+            sb.append("Object.freeze(").append(object).append(".prototype);\n\n");
         });
         return sb.toString();
     }

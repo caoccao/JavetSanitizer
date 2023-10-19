@@ -47,7 +47,8 @@ public class TestJavetSanitizerFridge {
                         "  delete globalThis.Object;\n" +
                         "  return _Object;\n" +
                         "})();\n" +
-                        "Object.freeze(Object, Object.prototype);\n" +
+                        "Object.freeze(Object);\n" +
+                        "Object.freeze(Object.prototype);\n" +
                         "\n" +
                         "// Array\n" +
                         "const Array = (() => {\n" +
@@ -55,7 +56,8 @@ public class TestJavetSanitizerFridge {
                         "  delete globalThis.Array;\n" +
                         "  return _Array;\n" +
                         "})();\n" +
-                        "Object.freeze(Array, Array.prototype);\n\n",
+                        "Object.freeze(Array);\n" +
+                        "Object.freeze(Array.prototype);\n\n",
                 codeString);
     }
 }
