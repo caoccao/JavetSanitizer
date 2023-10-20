@@ -229,6 +229,13 @@ public class TestCompromiseV8 {
                         () -> checker.check("Object = 1;"),
                         "Object should not pass the check.")
                         .getMessage());
+        assertEquals(
+                "Identifier Object is not allowed.",
+                assertThrows(
+                        JavetSanitizerException.class,
+                        () -> checker.check("Object.a = 1;"),
+                        "Object.a should not pass the check.")
+                        .getMessage());
         try (V8Runtime v8Runtime = getV8Runtime(FridgeStatus.Enabled)) {
             assertEquals(
                     "TypeError: Assignment to constant variable.",
