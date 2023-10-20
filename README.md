@@ -74,6 +74,8 @@ public static void main(String[] args) {
 ## Document
 
 - [Tutorials](docs/tutorials/)
+- Blog
+    - [How to Compromise V8 on JVM](https://sjtucaocao.medium.com/how-to-compromise-v8-on-jvm-ceb385572461)
 - [Development](docs/development.md)
 - [Errors](docs/errors.md)
 
