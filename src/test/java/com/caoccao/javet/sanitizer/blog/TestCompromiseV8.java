@@ -30,6 +30,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/*
+ * https://sjtucaocao.medium.com/how-to-compromise-v8-on-jvm-ceb385572461
+ */
 public class TestCompromiseV8 {
     protected V8Runtime getV8Runtime(FridgeStatus fridgeStatus) throws JavetException {
         V8Runtime v8Runtime = V8Host.getV8Instance().createV8Runtime();
