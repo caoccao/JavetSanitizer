@@ -35,7 +35,7 @@ object Config {
     object Versions {
         const val ANTLR4 = "4.13.1"
         const val JAVET = "3.0.0"
-        const val JUNIT = "5.10.0"
+        const val JUNIT = "5.10.1"
     }
 }
 
