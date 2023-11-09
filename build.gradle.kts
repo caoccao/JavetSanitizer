@@ -19,7 +19,7 @@ import org.gradle.internal.os.OperatingSystem
 object Config {
     const val GROUP_ID = "com.caoccao.javet.sanitizer"
     const val NAME = "Javet Sanitizer"
-    const val VERSION = "0.1.0-antlr-${Versions.ANTLR4}"
+    const val VERSION = "${Versions.JAVET_SANITIZER}-antlr-${Versions.ANTLR4}"
     const val URL = "https://github.com/caoccao/JavetSanitizer"
 
     object Pom {
@@ -65,6 +65,7 @@ object Config {
         const val ANTLR4 = "4.13.1"
         const val JAVA_VERSION = "1.8"
         const val JAVET = "3.0.0"
+        const val JAVET_SANITIZER = "0.1.0"
         const val JUNIT = "5.10.1"
     }
 }
@@ -134,7 +135,7 @@ publishing {
                 scm {
                     connection.set(Config.Pom.Scm.CONNECTION)
                     developerConnection.set(Config.Pom.Scm.DEVELOPER_CONNECTION)
-                    tag.set(Config.VERSION)
+                    tag.set(Config.Versions.JAVET_SANITIZER)
                     url.set(Config.URL)
                 }
                 properties.set(
