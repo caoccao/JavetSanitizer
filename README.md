@@ -1,5 +1,7 @@
 # Javet Sanitizer
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.caoccao.javet.sanitizer/javet-sanitizer?style=for-the-badge)](https://central.sonatype.com/search?q=g:com.caoccao.javet.sanitizer)
+
 [![Build](https://github.com/caoccao/JavetSanitizer/actions/workflows/multiple_build.yml/badge.svg)](https://github.com/caoccao/JavetSanitizer/actions/workflows/multiple_build.yml)
 
 Javet Sanitizer is a sanitizer framework for parsing and validating JavaScript code on JVM. It is built on top of [antlr4](https://github.com/antlr/antlr4) and [grammars-v4](https://github.com/antlr/grammars-v4).
@@ -31,8 +33,7 @@ Javet Sanitizer is designed to protect the script engine from that kind of attac
 
 ## Quick Start
 
-- Download the Javet Sanitizer jar file from the latest [actions](https://github.com/caoccao/JavetSanitizer/actions). There are 4 jar files supporting antlr v4.10 - v4.13. Please choose the right jar file matching your project.
-- Reference the downloaded jar file in your project.
+- Follow the [installation](docs/installation.md) to set up the project dependency.
 - Create a Java [file](src/test/java/com/caoccao/javet/sanitizer/tutorials/TutorialQuickStart.java) as follows.
 
 ```java
@@ -79,6 +80,7 @@ public static void main(String[] args) {
 
 ## Document
 
+- [Installation](docs/installation.md)
 - [Tutorials](docs/tutorials/)
 - [Development](docs/development.md)
 - [Errors](docs/errors.md)
