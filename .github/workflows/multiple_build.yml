@@ -96,7 +96,7 @@ jobs:
 
     - name: Build the Artifact
       run: |
-        sed 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_12 }}"/g' build.gradle.kts
+        sed -i 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_12 }}"/g' build.gradle.kts
         gradle build generatePomFileForGeneratePomPublication
 
     - name: Upload the Artifact
@@ -149,7 +149,7 @@ jobs:
 
     - name: Build the Artifact
       run: |
-        sed 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_11 }}"/g' build.gradle.kts
+        sed -i 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_11 }}"/g' build.gradle.kts
         gradle build generatePomFileForGeneratePomPublication
 
     - name: Upload the Artifact
@@ -202,7 +202,7 @@ jobs:
 
     - name: Build the Artifact
       run: |
-        sed 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_10 }}"/g' build.gradle.kts
+        sed -i 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_10 }}"/g' build.gradle.kts
         gradle build generatePomFileForGeneratePomPublication
 
     - name: Upload the Artifact
