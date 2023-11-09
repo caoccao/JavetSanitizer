@@ -85,4 +85,4 @@ public static void main(String[] args) {
 
 ## License
 
-[APACHE LICENSE, VERSION 2.0](blob/main/LICENSE)
+[APACHE LICENSE, VERSION 2.0](LICENSE)

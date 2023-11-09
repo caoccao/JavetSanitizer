@@ -44,14 +44,15 @@ jobs:
 
     - name: Build the Artifact
       run: |
-        gradle build
-        gradle javadoc
+        gradle build generatePomFileForGeneratePomPublication
 
     - name: Upload the Artifact
       uses: actions/upload-artifact@v3
       with:
         name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_13 }}
-        path: build/libs/*.jar
+        path: |
+          build/libs/*.jar
+          build/libs/*.xml
 
   build_for_antlr_4_12:
     name: Build for antlr v4.12.x
@@ -96,14 +97,15 @@ jobs:
     - name: Build the Artifact
       run: |
         sed 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_12 }}"/g' build.gradle.kts
-        gradle build
-        gradle javadoc
+        gradle build generatePomFileForGeneratePomPublication
 
     - name: Upload the Artifact
       uses: actions/upload-artifact@v3
       with:
         name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_12 }}
-        path: build/libs/*.jar
+        path: |
+          build/libs/*.jar
+          build/libs/*.xml
 
   build_for_antlr_4_11:
     name: Build for antlr v4.11.x
@@ -148,14 +150,15 @@ jobs:
     - name: Build the Artifact
       run: |
         sed 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_11 }}"/g' build.gradle.kts
-        gradle build
-        gradle javadoc
+        gradle build generatePomFileForGeneratePomPublication
 
     - name: Upload the Artifact
       uses: actions/upload-artifact@v3
       with:
         name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_11 }}
-        path: build/libs/*.jar
+        path: |
+          build/libs/*.jar
+          build/libs/*.xml
 
   build_for_antlr_4_10:
     name: Build for antlr v4.10.x
@@ -200,11 +203,12 @@ jobs:
     - name: Build the Artifact
       run: |
         sed 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_10 }}"/g' build.gradle.kts
-        gradle build
-        gradle javadoc
+        gradle build generatePomFileForGeneratePomPublication
 
     - name: Upload the Artifact
       uses: actions/upload-artifact@v3
       with:
         name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_10 }}
-        path: build/libs/*.jar
+        path: |
+          build/libs/*.jar
+          build/libs/*.xml
