@@ -19,7 +19,7 @@ import org.gradle.internal.os.OperatingSystem
 object Config {
     const val GROUP_ID = "com.caoccao.javet.sanitizer"
     const val NAME = "Javet Sanitizer"
-    const val VERSION = "0.1.0"
+    const val VERSION = "0.1.0-antlr-${Versions.ANTLR4}"
     const val URL = "https://github.com/caoccao/JavetSanitizer"
 
     object Pom {

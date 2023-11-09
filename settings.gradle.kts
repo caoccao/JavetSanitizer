@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-rootProject.name = "JavetSanitizer"
+rootProject.name = "javet-sanitizer"
 
