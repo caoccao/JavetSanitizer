@@ -82,6 +82,7 @@ public static void main(String[] args) {
 - [Tutorials](docs/tutorials/)
 - [Development](docs/development.md)
 - [Errors](docs/errors.md)
+- [Release Notes](docs/release-notes.md)
 
 ## License
 
