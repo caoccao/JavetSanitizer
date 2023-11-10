@@ -19,7 +19,7 @@ env:
   ANTLR_4_12: 4.12.0
   ANTLR_4_11: 4.11.1
   ANTLR_4_10: 4.10.1
-  JAVET_SANITIZER_VERSION: 0.1.0
+  JAVET_SANITIZER_VERSION: 0.2.0
 
 jobs:
   build_for_antlr_4_13:

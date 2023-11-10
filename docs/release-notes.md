@@ -2,17 +2,17 @@
 
 ## 0.1.0
 
-- Add checkers
+- Added checkers
   - Anonymous function checker
   - Expression sequence checker
   - Module checker
   - Single expression checker
   - Statement list checker
-- Add matchers
+- Added matchers
   - Built-in object matcher
   - Identifier matcher
   - Keyword matcher
-- Add parsers
+- Added parsers
   - Anonymous function parser
   - Expression sequence parser
   - Function declaration parser
