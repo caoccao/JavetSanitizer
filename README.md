@@ -1,6 +1,6 @@
 # Javet Sanitizer
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.caoccao.javet.sanitizer/javet-sanitizer?style=for-the-badge)](https://central.sonatype.com/search?q=g:com.caoccao.javet.sanitizer)
+[![Maven Central](https://img.shields.io/maven-central/v/com.caoccao.javet.sanitizer/javet-sanitizer?style=for-the-badge)](https://central.sonatype.com/search?q=g:com.caoccao.javet.sanitizer) [![Discord](https://img.shields.io/discord/870518906115211305?label=join%20our%20Discord&style=for-the-badge)](https://discord.gg/R4vvKU96gw) [![Donate](https://img.shields.io/badge/Donate-green?style=for-the-badge)](https://opencollective.com/javet)
 
 [![Build](https://github.com/caoccao/JavetSanitizer/actions/workflows/multiple_build.yml/badge.svg)](https://github.com/caoccao/JavetSanitizer/actions/workflows/multiple_build.yml)
 
