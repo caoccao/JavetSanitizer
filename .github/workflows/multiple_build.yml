@@ -52,7 +52,7 @@ jobs:
         name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_13 }}
         path: |
           build/libs/*.jar
-          build/libs/*.xml
+          build/libs/*.pom
 
   build_for_antlr_4_12:
     name: Build for antlr v4.12.x
@@ -105,7 +105,7 @@ jobs:
         name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_12 }}
         path: |
           build/libs/*.jar
-          build/libs/*.xml
+          build/libs/*.pom
 
   build_for_antlr_4_11:
     name: Build for antlr v4.11.x
@@ -158,7 +158,7 @@ jobs:
         name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_11 }}
         path: |
           build/libs/*.jar
-          build/libs/*.xml
+          build/libs/*.pom
 
   build_for_antlr_4_10:
     name: Build for antlr v4.10.x
@@ -211,4 +211,4 @@ jobs:
         name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_10 }}
         path: |
           build/libs/*.jar
-          build/libs/*.xml
+          build/libs/*.pom
