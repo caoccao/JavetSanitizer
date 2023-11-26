@@ -154,6 +154,6 @@ tasks {
         useJUnitPlatform()
     }
     withType<GenerateMavenPom> {
-        destination = file("$buildDir/libs/pom.xml")
+        destination = file("$buildDir/libs/${Config.Pom.ARTIFACT_ID}-${Config.VERSION}.pom")
     }
 }

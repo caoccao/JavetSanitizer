@@ -34,7 +34,7 @@ public class TestJavetSanitizerSingleExpressionChecker extends BaseTestJavetSani
                         null));
         assertException(
                 () -> new JavetSanitizerSingleExpressionChecker().check(";;;"),
-                200, "Token ; is invalid. Expecting {RegularExpressionLiteral, '[', '(', '{', '++', '--', '+', '-', '~', '!', 'null', BooleanLiteral, DecimalLiteral, HexIntegerLiteral, OctalIntegerLiteral, OctalIntegerLiteral2, BinaryIntegerLiteral, BigHexIntegerLiteral, BigOctalIntegerLiteral, BigBinaryIntegerLiteral, BigDecimalIntegerLiteral, 'typeof', 'new', 'void', 'function', 'this', 'delete', 'as', 'from', 'class', 'super', 'import', 'async', 'await', 'yield', NonStrictLet, Identifier, StringLiteral, BackTick}.",
+                200, "Token ; is invalid. Expecting {RegularExpressionLiteral, '[', '(', '{', '++', '--', '+', '-', '~', '!', 'null', BooleanLiteral, DecimalLiteral, HexIntegerLiteral, OctalIntegerLiteral, OctalIntegerLiteral2, BinaryIntegerLiteral, BigHexIntegerLiteral, BigOctalIntegerLiteral, BigBinaryIntegerLiteral, BigDecimalIntegerLiteral, 'typeof', 'new', 'void', 'function', 'this', 'delete', 'as', 'from', 'of', 'class', 'super', 'import', 'async', 'await', 'yield', NonStrictLet, Identifier, StringLiteral, BackTick}.",
                 "Source Code: ;\n" +
                         "Line Number: 1, 1\n" +
                         "Column: 0, 1\n" +
