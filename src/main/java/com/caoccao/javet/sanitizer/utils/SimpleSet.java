@@ -45,6 +45,7 @@ public final class SimpleSet {
      * @return the set
      * @since 0.1.0
      */
+    @SafeVarargs
     public static <T> Set<T> of(T... objects) {
         Set<T> set = new HashSet<>();
         Collections.addAll(set, objects);

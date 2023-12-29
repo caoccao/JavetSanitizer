@@ -46,6 +46,7 @@ public final class SimpleList {
      * @return the list
      * @since 0.1.0
      */
+    @SafeVarargs
     public static <T> List<T> of(T... objects) {
         return Arrays.asList(Objects.requireNonNull(objects));
     }
