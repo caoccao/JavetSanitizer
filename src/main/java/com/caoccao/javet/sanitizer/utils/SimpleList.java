@@ -17,8 +17,9 @@
 package com.caoccao.javet.sanitizer.utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The type Simple list.
@@ -46,8 +47,6 @@ public final class SimpleList {
      * @since 0.1.0
      */
     public static <T> List<T> of(T... objects) {
-        List<T> list = new ArrayList<>();
-        Collections.addAll(list, objects);
-        return list;
+        return Arrays.asList(Objects.requireNonNull(objects));
     }
 }
