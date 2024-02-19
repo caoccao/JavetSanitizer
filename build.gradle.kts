@@ -64,7 +64,7 @@ object Config {
     object Versions {
         const val ANTLR4 = "4.13.1"
         const val JAVA_VERSION = "1.8"
-        const val JAVET = "3.0.2"
+        const val JAVET = "3.0.4"
         const val JAVET_SANITIZER = "0.3.0"
         const val JUNIT = "5.10.1"
     }
