@@ -15,47 +15,19 @@ on:
       - "docs/**"
 
 env:
-  ANTLR_4_13: 4.13.1
-  ANTLR_4_12: 4.12.0
-  ANTLR_4_11: 4.11.1
-  ANTLR_4_10: 4.10.1
-  JAVET_SANITIZER_VERSION: 0.3.0
+  JAVET_SANITIZER_VERSION: 0.4.0
 
 jobs:
-  build_for_antlr_4_13:
-    name: Build for antlr v4.13.x
-    runs-on: ubuntu-latest
+  build_javet_sanitizer:
+    strategy:
+      matrix:
+        include:
+          - antlr_version: 4.13.1
+          - antlr_version: 4.12.0
+          - antlr_version: 4.11.1
+          - antlr_version: 4.10.1
 
-    steps:
-
-    - name: Checkout the code
-      uses: actions/checkout@v4
-
-    - name: Setup JDK 8
-      uses: actions/setup-java@v4
-      with:
-        distribution: corretto
-        java-version: 8
-
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
-      with:
-        gradle-version: 8.5
-
-    - name: Build the Artifact
-      run: |
-        gradle build generatePomFileForGeneratePomPublication
-
-    - name: Upload the Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_13 }}
-        path: |
-          build/libs/*.jar
-          build/libs/*.pom
-
-  build_for_antlr_4_12:
-    name: Build for antlr v4.12.x
+    name: Build for antlr v${{ matrix.antlr_version }}
     runs-on: ubuntu-latest
 
     steps:
@@ -72,10 +44,10 @@ jobs:
     - name: Build Grammar
       run: |
         cd ../
-        curl -O https://www.antlr.org/download/antlr-${{ env.ANTLR_4_12 }}-complete.jar
+        curl -O https://www.antlr.org/download/antlr-${{ matrix.antlr_version }}-complete.jar
         git clone https://github.com/caoccao/grammars-v4.git
         cd grammars-v4/javascript/javascript
-        java -Xmx500M -cp "../../../antlr-${{ env.ANTLR_4_12 }}-complete.jar:$CLASSPATH" org.antlr.v4.Tool -package com.caoccao.javet.sanitizer.antlr -o gen *.g4
+        java -Xmx500M -cp "../../../antlr-${{ matrix.antlr_version }}-complete.jar:$CLASSPATH" org.antlr.v4.Tool -package com.caoccao.javet.sanitizer.antlr -o gen *.g4
         cd ../../../JavetSanitizer
         cp -f ../grammars-v4/javascript/javascript/gen/*.java src/main/java/com/caoccao/javet/sanitizer/antlr
         cp -f ../grammars-v4/javascript/javascript/Java/*.java src/main/java/com/caoccao/javet/sanitizer/antlr
@@ -96,119 +68,13 @@ jobs:
 
     - name: Build the Artifact
       run: |
-        sed -i 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_12 }}"/g' build.gradle.kts
+        sed -i 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ matrix.antlr_version }}"/g' build.gradle.kts
         gradle build generatePomFileForGeneratePomPublication
 
     - name: Upload the Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_12 }}
-        path: |
-          build/libs/*.jar
-          build/libs/*.pom
-
-  build_for_antlr_4_11:
-    name: Build for antlr v4.11.x
-    runs-on: ubuntu-latest
-
-    steps:
-
-    - name: Checkout the code
-      uses: actions/checkout@v4
-
-    - name: Setup JDK 11
-      uses: actions/setup-java@v4
-      with:
-        distribution: corretto
-        java-version: 11
-
-    - name: Build Grammar
-      run: |
-        cd ../
-        curl -O https://www.antlr.org/download/antlr-${{ env.ANTLR_4_11 }}-complete.jar
-        git clone https://github.com/caoccao/grammars-v4.git
-        cd grammars-v4/javascript/javascript
-        java -Xmx500M -cp "../../../antlr-${{ env.ANTLR_4_11 }}-complete.jar:$CLASSPATH" org.antlr.v4.Tool -package com.caoccao.javet.sanitizer.antlr -o gen *.g4
-        cd ../../../JavetSanitizer
-        cp -f ../grammars-v4/javascript/javascript/gen/*.java src/main/java/com/caoccao/javet/sanitizer/antlr
-        cp -f ../grammars-v4/javascript/javascript/Java/*.java src/main/java/com/caoccao/javet/sanitizer/antlr
-        sed -i 's/@link JavaScriptParser#singleExpression/@link JavaScriptParser#singleExpression()/g' src/main/java/com/caoccao/javet/sanitizer/antlr/JavaScriptParserListener.java
-        sed -i '1 i package com.caoccao.javet.sanitizer.antlr;\n' src/main/java/com/caoccao/javet/sanitizer/antlr/JavaScriptLexerBase.java
-        sed -i '1 i package com.caoccao.javet.sanitizer.antlr;\n' src/main/java/com/caoccao/javet/sanitizer/antlr/JavaScriptParserBase.java
-
-    - name: Setup JDK 8
-      uses: actions/setup-java@v4
-      with:
-        distribution: corretto
-        java-version: 8
-
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
-      with:
-        gradle-version: 8.5
-
-    - name: Build the Artifact
-      run: |
-        sed -i 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_11 }}"/g' build.gradle.kts
-        gradle build generatePomFileForGeneratePomPublication
-
-    - name: Upload the Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_11 }}
-        path: |
-          build/libs/*.jar
-          build/libs/*.pom
-
-  build_for_antlr_4_10:
-    name: Build for antlr v4.10.x
-    runs-on: ubuntu-latest
-
-    steps:
-
-    - name: Checkout the code
-      uses: actions/checkout@v4
-
-    - name: Setup JDK 11
-      uses: actions/setup-java@v4
-      with:
-        distribution: corretto
-        java-version: 11
-
-    - name: Build Grammar
-      run: |
-        cd ../
-        curl -O https://www.antlr.org/download/antlr-${{ env.ANTLR_4_10 }}-complete.jar
-        git clone https://github.com/caoccao/grammars-v4.git
-        cd grammars-v4/javascript/javascript
-        java -Xmx500M -cp "../../../antlr-${{ env.ANTLR_4_10 }}-complete.jar:$CLASSPATH" org.antlr.v4.Tool -package com.caoccao.javet.sanitizer.antlr -o gen *.g4
-        cd ../../../JavetSanitizer
-        cp -f ../grammars-v4/javascript/javascript/gen/*.java src/main/java/com/caoccao/javet/sanitizer/antlr
-        cp -f ../grammars-v4/javascript/javascript/Java/*.java src/main/java/com/caoccao/javet/sanitizer/antlr
-        sed -i 's/@link JavaScriptParser#singleExpression/@link JavaScriptParser#singleExpression()/g' src/main/java/com/caoccao/javet/sanitizer/antlr/JavaScriptParserListener.java
-        sed -i '1 i package com.caoccao.javet.sanitizer.antlr;\n' src/main/java/com/caoccao/javet/sanitizer/antlr/JavaScriptLexerBase.java
-        sed -i '1 i package com.caoccao.javet.sanitizer.antlr;\n' src/main/java/com/caoccao/javet/sanitizer/antlr/JavaScriptParserBase.java
-
-    - name: Setup JDK 8
-      uses: actions/setup-java@v4
-      with:
-        distribution: corretto
-        java-version: 8
-
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
-      with:
-        gradle-version: 8.5
-
-    - name: Build the Artifact
-      run: |
-        sed -i 's/const val ANTLR4 = "[0-9]\+\.[0-9]\+\.[0-9]\+"/const val ANTLR4 = "${{ env.ANTLR_4_10 }}"/g' build.gradle.kts
-        gradle build generatePomFileForGeneratePomPublication
-
-    - name: Upload the Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ env.ANTLR_4_10 }}
+        name: javet-sanitizer-${{ env.JAVET_SANITIZER_VERSION }}-antlr-${{ matrix.antlr_version }}
         path: |
           build/libs/*.jar
           build/libs/*.pom
