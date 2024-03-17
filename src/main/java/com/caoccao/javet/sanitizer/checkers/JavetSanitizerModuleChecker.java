@@ -62,7 +62,6 @@ public class JavetSanitizerModuleChecker extends JavetSanitizerStatementListChec
     @Override
     public boolean check(String codeString) throws JavetSanitizerException {
         super.check(codeString);
-        final Set<String> reservedFunctionIdentifierSet = option.getReservedFunctionIdentifierSet();
         Map<String, JavaScriptFunctionDeclarationParser> functionParserMap = getFunctionParserMap();
         functionParserMap.clear();
         boolean importStatementAllowed = option.isKeywordImportEnabled();

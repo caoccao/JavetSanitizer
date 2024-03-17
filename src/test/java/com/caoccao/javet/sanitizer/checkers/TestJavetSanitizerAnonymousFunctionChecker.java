@@ -34,11 +34,11 @@ public class TestJavetSanitizerAnonymousFunctionChecker extends BaseTestJavetSan
                         null));
         assertException(
                 () -> new JavetSanitizerAnonymousFunctionChecker().check("const a;"),
-                200, "Token const is invalid. Expecting {'(', 'function', 'as', 'from', 'of', 'async', 'yield', NonStrictLet, Identifier}.",
-                "Source Code: const\n" +
+                200, "Token a is invalid. Expecting '=>'.",
+                "Source Code: a\n" +
                         "Line Number: 1, 1\n" +
-                        "Column: 0, 5\n" +
-                        "Position: 0, 5");
+                        "Column: 6, 7\n" +
+                        "Position: 6, 7");
         assertException(
                 () -> new JavetSanitizerAnonymousFunctionChecker().check("function() => {}"),
                 200, "Token => is invalid. Expecting '{'.",
@@ -48,32 +48,20 @@ public class TestJavetSanitizerAnonymousFunctionChecker extends BaseTestJavetSan
                         "Position: 11, 13");
         assertException(
                 () -> new JavetSanitizerAnonymousFunctionChecker().check("function abc() => {}"),
-                200, "Token abc is invalid. Expecting '('.",
-                "Source Code: abc\n" +
+                200, "Token => is invalid. Expecting '{'.",
+                "Source Code: =>\n" +
                         "Line Number: 1, 1\n" +
-                        "Column: 9, 12\n" +
-                        "Position: 9, 12");
-        assertException(
-                () -> new JavetSanitizerAnonymousFunctionChecker().check("function x() {}"),
-                200, "Token x is invalid. Expecting '('.",
-                "Source Code: x\n" +
-                        "Line Number: 1, 1\n" +
-                        "Column: 9, 10\n" +
-                        "Position: 9, 10");
-        assertException(
-                () -> new JavetSanitizerAnonymousFunctionChecker().check("function x(a, b) {}"),
-                200, "Token x is invalid. Expecting '('.",
-                "Source Code: x\n" +
-                        "Line Number: 1, 1\n" +
-                        "Column: 9, 10\n" +
-                        "Position: 9, 10");
+                        "Column: 15, 17\n" +
+                        "Position: 15, 17");
     }
 
     @Test
     public void testValidStatements() throws JavetSanitizerException {
         List<String> statements = SimpleList.of(
                 "() => 1", "() => {}", "(a, b) => {}",
-                "function() {}", "function(a, b) {}");
+                "function() {}", "function(a, b) {}",
+                // The following cases are invalid. They are grammars v4 bugs.
+                "function x() {}", "function x(a, b) {}");
         for (String statement : statements) {
             assertTrue(
                     new JavetSanitizerAnonymousFunctionChecker().check(statement),

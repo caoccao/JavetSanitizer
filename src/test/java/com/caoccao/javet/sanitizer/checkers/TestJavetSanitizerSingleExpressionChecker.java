@@ -34,25 +34,18 @@ public class TestJavetSanitizerSingleExpressionChecker extends BaseTestJavetSani
                         null));
         assertException(
                 () -> new JavetSanitizerSingleExpressionChecker().check(";;;"),
-                200, "Token ; is invalid. Expecting {RegularExpressionLiteral, '[', '(', '{', '++', '--', '+', '-', '~', '!', 'null', BooleanLiteral, DecimalLiteral, HexIntegerLiteral, OctalIntegerLiteral, OctalIntegerLiteral2, BinaryIntegerLiteral, BigHexIntegerLiteral, BigOctalIntegerLiteral, BigBinaryIntegerLiteral, BigDecimalIntegerLiteral, 'typeof', 'new', 'void', 'function', 'this', 'delete', 'as', 'from', 'of', 'class', 'super', 'import', 'async', 'await', 'yield', NonStrictLet, Identifier, StringLiteral, BackTick}.",
+                200, "Token ; is invalid. Expecting {RegularExpressionLiteral, '[', '(', '{', '++', '--', '+', '-', '~', '!', 'null', BooleanLiteral, DecimalLiteral, HexIntegerLiteral, OctalIntegerLiteral, OctalIntegerLiteral2, BinaryIntegerLiteral, BigHexIntegerLiteral, BigOctalIntegerLiteral, BigBinaryIntegerLiteral, BigDecimalIntegerLiteral, 'break', 'do', 'instanceof', 'typeof', 'case', 'else', 'new', 'var', 'catch', 'finally', 'return', 'void', 'continue', 'for', 'switch', 'while', 'debugger', 'function', 'this', 'with', 'default', 'if', 'throw', 'delete', 'in', 'try', 'as', 'from', 'of', 'yield', 'yield*', 'class', 'enum', 'extends', 'super', 'const', 'export', 'import', 'async', 'await', 'implements', StrictLet, NonStrictLet, 'private', 'public', 'interface', 'package', 'protected', 'static', Identifier, StringLiteral, BackTick}.",
                 "Source Code: ;\n" +
                         "Line Number: 1, 1\n" +
                         "Column: 0, 1\n" +
                         "Position: 0, 1");
-        assertException(
-                () -> new JavetSanitizerSingleExpressionChecker().check("function a() {}"),
-                200, "Token a is invalid. Expecting '('.",
-                "Source Code: a\n" +
-                        "Line Number: 1, 1\n" +
-                        "Column: 9, 10\n" +
-                        "Position: 9, 10");
     }
 
     @Test
     public void testValidStatements() throws JavetSanitizerException {
         List<String> statements = SimpleList.of(
                 "() => 1", "() => {}", "(a, b) => {}", "1 +",
-                "function() {}", "function(a, b) {}",
+                "function() {}", "function(a, b) {}", "function a() {}",
                 "1", "'a'", "1 + 1", "a == b", "[1,2,3]", "{ a: 1, b: 2, c: 3}",
                 "a?.b.?.c", "a?.['b']", "a?.b()");
         for (String statement : statements) {

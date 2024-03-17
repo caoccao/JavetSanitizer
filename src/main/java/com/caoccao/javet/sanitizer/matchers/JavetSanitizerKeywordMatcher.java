@@ -66,6 +66,9 @@ public final class JavetSanitizerKeywordMatcher implements IJavetSanitizerMatche
             if (context instanceof JavaScriptParser.MethodDefinitionContext) {
                 return ((JavaScriptParser.MethodDefinitionContext) context).Async();
             }
+            if (context instanceof JavaScriptParser.NamedFunctionContext) {
+                return ((JavaScriptParser.NamedFunctionContext) context).functionDeclaration().Async();
+            }
         }
         if (!option.isKeywordAwaitEnabled()) {
             if (context instanceof JavaScriptParser.AwaitExpressionContext) {

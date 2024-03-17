@@ -39,27 +39,14 @@ public class TestJavetSanitizerExpressionSequenceChecker extends BaseTestJavetSa
                         "Line Number: 1, 1\n" +
                         "Column: 2, 3\n" +
                         "Position: 2, 3");
-        assertException(
-                () -> new JavetSanitizerExpressionSequenceChecker().check("function x() {}"),
-                200, "Token x is invalid. Expecting '('.",
-                "Source Code: x\n" +
-                        "Line Number: 1, 1\n" +
-                        "Column: 9, 10\n" +
-                        "Position: 9, 10");
-        assertException(
-                () -> new JavetSanitizerExpressionSequenceChecker().check("function x(a, b) {}"),
-                200, "Token x is invalid. Expecting '('.",
-                "Source Code: x\n" +
-                        "Line Number: 1, 1\n" +
-                        "Column: 9, 10\n" +
-                        "Position: 9, 10");
     }
 
     @Test
     public void testValidStatements() throws JavetSanitizerException {
         List<String> statements = SimpleList.of(
                 "1", "'a'", "1 + 1", "a == b", "[1,2,3]", "{ a: 1, b: 2, c: 3}",
-                "() => 1", "() => {}", "(a, b) => {}", "function() {}", "function(a, b) {}");
+                "() => 1", "() => {}", "(a, b) => {}",
+                "function() {}", "function(a, b) {}", "function x() {}", "function x(a, b) {}");
         for (String statement : statements) {
             assertTrue(
                     new JavetSanitizerExpressionSequenceChecker().check(statement),

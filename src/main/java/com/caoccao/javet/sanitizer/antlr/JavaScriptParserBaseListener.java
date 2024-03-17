@@ -1517,6 +1517,18 @@ public class JavaScriptParserBaseListener implements JavaScriptParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNamedFunction(JavaScriptParser.NamedFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNamedFunction(JavaScriptParser.NamedFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAnonymousFunctionDecl(JavaScriptParser.AnonymousFunctionDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}

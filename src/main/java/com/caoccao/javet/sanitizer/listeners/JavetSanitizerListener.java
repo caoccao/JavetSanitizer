@@ -523,6 +523,11 @@ public class JavetSanitizerListener implements JavaScriptParserListener {
     }
 
     @Override
+    public void enterNamedFunction(JavaScriptParser.NamedFunctionContext ctx) {
+
+    }
+
+    @Override
     public void enterNewExpression(JavaScriptParser.NewExpressionContext ctx) {
 
     }
@@ -1239,6 +1244,11 @@ public class JavetSanitizerListener implements JavaScriptParserListener {
 
     @Override
     public void exitMultiplicativeExpression(JavaScriptParser.MultiplicativeExpressionContext ctx) {
+
+    }
+
+    @Override
+    public void exitNamedFunction(JavaScriptParser.NamedFunctionContext ctx) {
 
     }
 

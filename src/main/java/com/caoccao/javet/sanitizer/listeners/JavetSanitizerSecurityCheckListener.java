@@ -178,6 +178,12 @@ public class JavetSanitizerSecurityCheckListener extends JavetSanitizerListener 
     }
 
     @Override
+    public void enterNamedFunction(JavaScriptParser.NamedFunctionContext ctx) {
+        super.enterNamedFunction(ctx);
+        validateKeyword(ctx);
+    }
+
+    @Override
     public void enterVarModifier(JavaScriptParser.VarModifierContext ctx) {
         super.enterVarModifier(ctx);
         validateKeyword(ctx);

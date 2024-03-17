@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.3.0
+
+- Updated grammars
+- Fixed test cases
+
 ## 0.2.0
 
 - Updated grammars
