@@ -15,7 +15,7 @@ on:
       - "docs/**"
 
 env:
-  JAVET_SANITIZER_VERSION: 0.4.0
+  JAVET_SANITIZER_VERSION: 0.3.0
 
 jobs:
   build_javet_sanitizer:
